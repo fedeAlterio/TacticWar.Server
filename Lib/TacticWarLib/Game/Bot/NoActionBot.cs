@@ -50,7 +50,7 @@ namespace TacticWar.Lib.Game.Bot
         {
             var currentPlayer = _turnInfo.CurrentActionPlayer;
             var territory = currentPlayer!.Territories.Shuffled().FirstOrDefault();
-            if (territory is not null)
+            if (territory is not null && _turnInfo.ArmiesToPlace > 0)
                 await _gameApi.PlaceArmies(CurrentPlayer, 1, territory.Territory);
             else
                 await _gameApi.SkipPlacementPhase(CurrentPlayer);

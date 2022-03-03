@@ -66,7 +66,7 @@ namespace TacticWar.Lib.Game.Bot
             var player = _turnInfo.CurrentTurnPlayer;
             if (_commandsByPhase.TryGetValue(_turnInfo.CurrentPhase, out var command))
             {
-                await command?.Invoke()!;
+                await command?.Invoke()!;                
             }
         }
 

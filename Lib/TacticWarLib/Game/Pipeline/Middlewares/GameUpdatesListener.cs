@@ -45,6 +45,9 @@ namespace TacticWar.Lib.Game.Pipeline.Middlewares
         // Pipeline Action
         protected override async Task DoAction()
         {
+            if (_ss.CurrentCount == 0)
+               throw new InvalidOperationException($"Already doing a move");
+
             using (var _ = await _ss.WaitAsyncScoped())
             {
                 _pipelineRunning = true;
@@ -57,6 +60,7 @@ namespace TacticWar.Lib.Game.Pipeline.Middlewares
             }
             finally
             {
+                
                 using (var _ = await _ss.WaitAsyncScoped())
                 {
                     _pipelineRunning = false;
