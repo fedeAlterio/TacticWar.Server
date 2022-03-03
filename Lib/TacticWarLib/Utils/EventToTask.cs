@@ -1,0 +1,32 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TacticWar.Lib.Utils
+{
+    public static class EventToTask
+    {
+        public static Task TaskFromEvent<T>(this T @this, Expression<Func<T, Action?>> actionExpression)
+        {
+            _ = @this ?? throw new ArgumentNullException(nameof(@this));
+            var memberExpression = (MemberExpression)actionExpression.Body;
+            var eventInfo = @this.GetType().GetEvent(memberExpression.Member.Name)!;
+            var addMethod =  eventInfo.GetAddMethod();
+            var removeMethod = eventInfo.GetRemoveMethod();
+            var delegateType = addMethod!.GetParameters()[0].ParameterType;
+            var tcs = new TaskCompletionSource<object?>();
+            Action? handler = null;
+            handler = () =>
+            {
+                tcs.SetResult(null);
+                removeMethod!.Invoke(@this, new [] { handler! });
+            };
+            addMethod.Invoke(@this, new [] { handler });
+            return tcs.Task;
+        }
+    }
+}
