@@ -329,10 +329,14 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
             {
                 turnManager.AttackPhase -= attackPhaseHandler;
                 turnInfo.CurrentPhase.Should().Be(GamePhase.PlacementAfterAttack);
+                turnInfo.CurrentActionPlayer.Should().Be(attackInfo.Attacker);
+                turnInfo.CurrentTurnPlayer.Should().Be(attackInfo.Attacker);
                 attackFromPlayerTerritory = null;
                 attackToPlayerTerritory = null;
                 defenceCalled = false;
-                await turnManager.PlaceArmiesAfterAttack(turnInfo.CurrentActionPlayer!.Color, 1);
+                await turnManager.PlaceArmiesAfterAttack(turnInfo.CurrentTurnPlayer!.Color, 1);
+                //turnInfo.CurrentActionPlayer.Should().Be(attackInfo.Attacker);
+                //turnInfo.CurrentTurnPlayer.Should().Be(attackInfo.Attacker);
                 turnInfo.CurrentPhase.Should().Be(GamePhase.Attack);
                 tcs.SetResult(null);
 
@@ -343,6 +347,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 
             await turnManager.Start();
             await tcs.Task;
+
         }
 
 

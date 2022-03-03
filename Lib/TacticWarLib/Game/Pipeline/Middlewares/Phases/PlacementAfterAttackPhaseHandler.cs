@@ -48,7 +48,7 @@ namespace TacticWar.Lib.Game.Pipeline.Middlewares.Phases
         // IGameApi
         public void PlaceArmiesAfterAttack(int armies)
         {
-            _gameTable.Move(_turnInfo.CurrentActionPlayer!, _attackInfo!.AttackFrom.Territory, _attackInfo.AttackTo.Territory, armies);
+            _gameTable.Move(_turnInfo.CurrentTurnPlayer!, _attackInfo!.AttackFrom.Territory, _attackInfo.AttackTo.Territory, armies);
             ArmiesPlaced?.Invoke();
         }
 
