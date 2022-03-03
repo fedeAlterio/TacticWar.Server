@@ -27,7 +27,7 @@ namespace TacticWar.Rest.RequestsHandlers.Room
         {
             var room = await _roomsManager.NewRoom();
             room.AddPlayer(request.PlayerName, request.SecretCode);
-            //room.AddPlayer(request.PlayerName + "b", request.SecretCode, true);
+            room.AddPlayer(request.PlayerName + "b", request.SecretCode, true);
             //room.AddPlayer(body.PlayerName + "c", body.SecretCode);
             //room.AddPlayer(body.PlayerName + "d", body.SecretCode);
             //room.AddPlayer(body.PlayerName + "e", body.SecretCode);

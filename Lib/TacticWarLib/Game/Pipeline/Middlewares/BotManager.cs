@@ -67,10 +67,11 @@ namespace TacticWar.Lib.Game.Pipeline.Middlewares
         }
 
         public void AddBot(PlayerColor color, Action<IBotSettings>? configuration = null)
-        {            
+        {                        
             var bot = _botCreator.NewNoActionBot();
             configuration?.Invoke(bot);
-            _botsByPlayer.Add(color, bot);
+            if(!_botsByPlayer.ContainsKey(color))
+                _botsByPlayer.Add(color, bot);
             Task.Run(PlayIfShould);
         }
 
