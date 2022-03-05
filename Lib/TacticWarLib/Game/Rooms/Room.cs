@@ -147,11 +147,20 @@ namespace TacticWar.Lib.Game.Rooms
 
         public async Task StartGame()
         {
-            if (GameStarted)
-                throw new GameException($"Game already started!");
+            Task<IGameManager> gameManagerTask;
+            using (var _ = _locker.Lock())
+            {
+                if (GameStarted)
+                    throw new GameException($"Game already started!");
 
-            GameStarted = true;
-            GameManager =  await _gameConfigurator!.StartGame();
+                if (Players.Count < 2)
+                    throw new GameException($"There are not enough players to start!");
+
+                GameStarted = true;
+                gameManagerTask = _gameConfigurator!.StartGame();
+            }
+
+            GameManager = await gameManagerTask;
             //GameManager.GameTerminationController.GameEnded += OnRoomDeath;
         }
 
