@@ -1,9 +1,4 @@
-﻿using TacticWar.Lib.Game.GamePhases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Players;
+﻿using TacticWar.Lib.Game.Players;
 
 namespace TacticWar.Rest.ViewModels.Services
 {

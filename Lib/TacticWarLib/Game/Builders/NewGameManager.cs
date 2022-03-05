@@ -1,25 +1,10 @@
-﻿using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Deck;
-using TacticWar.Lib.Game.GamePhases;
-using TacticWar.Lib.Game.Map;
-using TacticWar.Lib.Game.Players;
-using TacticWar.Lib.Game.Table;
-using TacticWar.Lib.Game.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares;
-using TacticWar.Lib.Game.Deck.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Data;
+﻿using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Table.Abstractions;
+using TacticWar.Lib.Game.Core.Abstractions;
 
-namespace TacticWar.Lib.Game
+namespace TacticWar.Lib.Game.Builders
 {
-    public class NewGameManager : INewGameManager
+    public class NewGameManager : IGameManager
     {
         // Initialization
         public NewGameManager(IGameApi gameApi, INewTurnManager turnManager, IGameTable gameTable, IServiceProvider gameServiceProvider)

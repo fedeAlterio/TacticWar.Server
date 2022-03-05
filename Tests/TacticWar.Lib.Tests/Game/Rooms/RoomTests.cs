@@ -3,18 +3,13 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Timers;
-using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Builders.Abstractios;
 using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Rooms;
 using TacticWar.Lib.Tests.Attributes;
 using TacticWar.Lib.Tests.Extensions;
-using TacticWar.Lib.Tests.Game.Pipeline.Extensions;
-using Xunit;
-using static TacticWar.Lib.Game.Rooms.Room;
 
 namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 {
@@ -169,9 +164,9 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
             return room;
         }
 
-        private INewGameBuilder NewGameBuilder()
+        private IGameBuilder NewGameBuilder()
         {
-            var builderMock = new Mock<INewGameBuilder>();
+            var builderMock = new Mock<IGameBuilder>();
             return builderMock.Object;
         }
     }

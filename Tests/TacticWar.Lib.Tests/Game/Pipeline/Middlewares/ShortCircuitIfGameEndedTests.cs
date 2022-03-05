@@ -1,13 +1,8 @@
-﻿using FluentAssertions;
-using Moq;
+﻿using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Pipeline;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares;
+using TacticWar.Lib.Game.Core.Abstractions;
+using TacticWar.Lib.Game.Core.Pipeline;
+using TacticWar.Lib.Game.Core.Pipeline.Middlewares;
 using TacticWar.Lib.Tests.Attributes;
 using TacticWar.Lib.Tests.Game.Pipeline.Extensions;
 

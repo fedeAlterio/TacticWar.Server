@@ -1,12 +1,9 @@
 ﻿using FluentAssertions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using TacticWar.Lib.Game;
+using TacticWar.Lib.Game.Abstractions;
 
 namespace TacticWar.Lib.Tests.Game.Pipeline.Extensions
 {

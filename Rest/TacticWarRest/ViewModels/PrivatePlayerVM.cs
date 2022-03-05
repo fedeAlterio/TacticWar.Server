@@ -1,10 +1,4 @@
-﻿using TacticWar.Lib.Game;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Players.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
+﻿using TacticWar.Lib.Game.Players.Abstractions;
 
 namespace TacticWar.Rest.ViewModels
 {

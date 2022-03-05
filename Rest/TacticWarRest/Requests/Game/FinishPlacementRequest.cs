@@ -1,5 +1,4 @@
-﻿using MediatR;
-using TacticWar.Lib.Game.Players;
+﻿using TacticWar.Lib.Game.Players;
 
 namespace TacticWar.Rest.Requests.Game
 {

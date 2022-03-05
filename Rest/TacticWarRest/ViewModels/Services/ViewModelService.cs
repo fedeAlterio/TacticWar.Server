@@ -1,11 +1,7 @@
 ﻿using TacticWar.Lib.Game.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Rest.Utils.LongPolling;
-using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Table.Abstractions;
 
 namespace TacticWar.Rest.ViewModels.Services
 {

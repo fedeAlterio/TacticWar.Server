@@ -1,12 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.Deck.Objectives;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Players.Abstractions;
 using TacticWar.Lib.Tests.Attributes;

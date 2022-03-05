@@ -1,17 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using TacticWar.Lib.Game;
-using TacticWar.Lib.Game.Exceptions;
-using TacticWar.Lib.Game.GamePhases;
-using TacticWar.Lib.Game.Map;
-using TacticWar.Lib.Game.Rooms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Pipeline;
 using MediatR;
 using TacticWar.Rest.Requests.Game;
 using TacticWar.Rest.ViewModels;

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Extensions;
+﻿using TacticWar.Lib.Extensions;
 using TacticWar.Lib.Game.Abstractions;
-using TacticWar.Lib.Game.GamePhases;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Abstractions;
+using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.Players;
+using TacticWar.Lib.Game.Table.Abstractions;
 
 namespace TacticWar.Lib.Game.Bot
 {
@@ -21,23 +15,26 @@ namespace TacticWar.Lib.Game.Bot
         }
 
 
-        private PlayerColor CurrentPlayer => _turnInfo.CurrentActionPlayer!.Color;
+
+        // Properties
+        private PlayerColor CurrentActionPlayer => _turnInfo.CurrentActionPlayer!.Color;
+
 
 
         // Commands
         protected override Task OnAttack()
         {
-            return _gameApi.SkipAttack(CurrentPlayer);
+            return _gameApi.SkipAttack(CurrentActionPlayer);
         }
 
         protected override Task OnDefence()
         {
-            return _gameApi.Defend(CurrentPlayer);
+            return _gameApi.Defend(CurrentActionPlayer);
         }
 
         protected override Task OnFreeMovePhase()
         {
-            return _gameApi.SkipFreeMove(CurrentPlayer);
+            return _gameApi.SkipFreeMove(CurrentActionPlayer);
         }
 
         protected override Task OnPlacementAfterAttackPhase()
@@ -51,9 +48,9 @@ namespace TacticWar.Lib.Game.Bot
             var currentPlayer = _turnInfo.CurrentActionPlayer;
             var territory = currentPlayer!.Territories.Shuffled().FirstOrDefault();
             if (territory is not null && _turnInfo.ArmiesToPlace > 0)
-                await _gameApi.PlaceArmies(CurrentPlayer, 1, territory.Territory);
+                await _gameApi.PlaceArmies(CurrentActionPlayer, 1, territory.Territory);
             else
-                await _gameApi.SkipPlacementPhase(CurrentPlayer);
+                await _gameApi.SkipPlacementPhase(CurrentActionPlayer);
         }
     }
 }

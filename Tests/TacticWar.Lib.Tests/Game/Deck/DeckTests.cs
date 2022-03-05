@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Deck;
 using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Tests.Attributes;
-using Xunit;
 
 namespace TacticWar.Lib.Tests.Game.Deck
 {

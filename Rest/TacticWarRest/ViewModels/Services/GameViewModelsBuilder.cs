@@ -1,17 +1,11 @@
-﻿using TacticWar.Lib.Game.GamePhases;
-using TacticWar.Lib.Game.Map;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.GamePhases.PhaseInfo;
+﻿using TacticWar.Lib.Game.GamePhases.PhaseInfo;
 using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Extensions;
 using TacticWar.Lib.Game.Players.Abstractions;
 using TacticWar.Lib.Game.Players;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
 using TacticWar.Rest.ViewModels.Phases;
-using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Table.Abstractions;
+using TacticWar.Lib.Game.Core.Abstractions;
 
 namespace TacticWar.Rest.ViewModels.Services
 {

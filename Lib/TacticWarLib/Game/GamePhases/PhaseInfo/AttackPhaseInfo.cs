@@ -1,10 +1,4 @@
-﻿using TacticWar.Lib.Game.Map;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Players;
+﻿using TacticWar.Lib.Game.Players;
 
 namespace TacticWar.Lib.Game.GamePhases.PhaseInfo
 {

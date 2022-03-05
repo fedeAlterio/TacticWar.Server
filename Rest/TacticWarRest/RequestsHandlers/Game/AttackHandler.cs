@@ -1,6 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Map;
+﻿using TacticWar.Lib.Game.Map;
 using TacticWar.Lib.Game.Rooms.Abstractions;
 using TacticWar.Rest.Requests.Game;
 using TacticWar.Rest.ViewModels.Services;

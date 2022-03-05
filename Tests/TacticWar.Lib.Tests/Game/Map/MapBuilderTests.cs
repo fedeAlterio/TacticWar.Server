@@ -1,14 +1,7 @@
 ﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Map;
 using TacticWar.Lib.Tests.Attributes;
 using TacticWar.Lib.Tests.Extensions;
-using Xunit;
 
 namespace TacticWar.Lib.Tests.Game.Map
 {

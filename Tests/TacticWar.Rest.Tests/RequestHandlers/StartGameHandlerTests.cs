@@ -1,9 +1,6 @@
 ﻿using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Builders;
@@ -25,10 +22,10 @@ namespace TacticWar.Test.TacticWar.Rest.Tests.RequestHandlers
             // Setup
             var playersInfo = ObjectsBuilder.NewPlayersInfoCollection();
             var gameConfigurator = new GameBuilder().NewGame(playersInfo);
-            INewGameManager? gameManager = null;
+            IGameManager? gameManager = null;
             var roomMock = new Mock<IRoom>();
             roomMock.Setup(x => x.BuildGame()).Returns(() => gameConfigurator);
-            roomMock.Setup(x => x.StartGame()).Callback(() => gameManager = gameConfigurator.StartGame());
+            roomMock.Setup(x => x.StartGame()).Returns(async () => gameManager = await gameConfigurator.StartGame());
             roomMock.Setup(x => x.Players).Returns(playersInfo.Info.Select(x => new WaitingPlayer { Color = x.Color, Name = x.Name, IsBot = true }).ToList());
 
             var roomsManagerMock = new Mock<IRoomsManager>();

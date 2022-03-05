@@ -1,16 +1,10 @@
 ﻿using Autofac;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Deck.Abstractions;
+using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 using TacticWar.Lib.Game.Deck.Objectives.Builders.Abstractions;
-using TacticWar.Lib.Game.Exceptions;
-using TacticWar.Lib.Game.Map;
 
-namespace TacticWar.Lib.Game.Deck
+namespace TacticWar.Lib.Game.Deck.Objectives.Decks
 {
     public class ObjectivesDeckBuilder
     {
@@ -39,7 +33,7 @@ namespace TacticWar.Lib.Game.Deck
                 .Select(t => ActivatorUtilities.CreateInstance(_serviceProvider, t))
                 .Cast<IObjectivesBuilder>()
                 .ToList();
-                ;
+            ;
 
             var objectives = builders.SelectMany(builder => builder.BuildObjectvies()).ToList();
             var deck = new Deck<IObjective>(objectives);

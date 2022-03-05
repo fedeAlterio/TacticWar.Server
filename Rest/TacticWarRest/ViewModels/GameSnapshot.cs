@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TacticWar.Lib.Game.Players;
+﻿using TacticWar.Lib.Game.Players;
 using TacticWar.Rest.ViewModels.Phases;
 
 namespace TacticWar.Rest.ViewModels

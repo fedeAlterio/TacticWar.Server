@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace TacticWar.Rest.Requests.Game
+﻿namespace TacticWar.Rest.Requests.Game
 {
     public record PlaceArmiesRequest : AuthenticatedRoomRequest
     {

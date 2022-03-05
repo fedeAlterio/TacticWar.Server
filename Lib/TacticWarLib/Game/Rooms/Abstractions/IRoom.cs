@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Abstractions;
+﻿using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Players;
 
 namespace TacticWar.Lib.Game.Rooms.Abstractions
@@ -20,7 +15,7 @@ namespace TacticWar.Lib.Game.Rooms.Abstractions
         public int Id { get; }
         public bool GameStarted { get; }
         public IReadOnlyList<WaitingPlayer> Players { get; }
-        public INewGameManager? GameManager { get; }
+        public IGameManager? GameManager { get; }
         public WaitingPlayer? Host { get; }
 
 
@@ -29,8 +24,8 @@ namespace TacticWar.Lib.Game.Rooms.Abstractions
         Task<PlayerColor> Authenticate(string name, int secretCode);
         WaitingPlayer AddPlayer(string name, int secretCode, bool isBot = false);
         void RemovePlayer(PlayerColor color);
-        INewGameServiceCollection BuildGame();
-        void StartGame();
+        IGameServiceCollection BuildGame();
+        Task StartGame();
         void KeepAlive(PlayerColor color);
     }
 }

@@ -1,15 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Extensions.Microsoft.DependencyInjection.Installers;
-using TacticWar.Lib.Game;
-using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Builders;
-using TacticWar.Lib.Game.Rooms;
-using TacticWar.Lib.Game.Rooms.Abstractions;
+using TacticWar.Lib.Game.Builders.Abstractios;
 
 namespace TacticWar.Lib.Extensions.Microsoft.DependencyInjection.Extensions
 {
@@ -18,7 +10,7 @@ namespace TacticWar.Lib.Extensions.Microsoft.DependencyInjection.Extensions
         // Extensions
         public static void AddTacticWar(this IServiceCollection @this)
         {
-            @this.AddSingleton<INewGameBuilder, GameBuilder>();
+            @this.AddSingleton<IGameBuilder, GameBuilder>();
             InstallServices(@this);
         }
 

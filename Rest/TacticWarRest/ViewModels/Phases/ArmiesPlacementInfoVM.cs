@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TacticWar.Lib.Game.GamePhases.PhaseInfo;
+﻿using TacticWar.Lib.Game.GamePhases.PhaseInfo;
 
 namespace TacticWar.Rest.ViewModels.Phases
 {

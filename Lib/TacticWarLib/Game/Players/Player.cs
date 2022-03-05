@@ -1,14 +1,9 @@
 ﻿using TacticWar.Lib.Game.Deck;
 using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Game.Map;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Players.Abstractions;
 using TacticWar.Lib.Game.Deck.Abstractions;
-using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 
 namespace TacticWar.Lib.Game.Players
 {

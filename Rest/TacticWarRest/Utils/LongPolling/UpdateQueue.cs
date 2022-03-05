@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace TacticWar.Rest.Utils.LongPolling
+﻿namespace TacticWar.Rest.Utils.LongPolling
 {
     public class UpdateQueue<T>
     {

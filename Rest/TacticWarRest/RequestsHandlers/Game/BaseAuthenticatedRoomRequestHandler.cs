@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TacticWar.Lib.Game.Abstractions;
+﻿using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Rooms.Abstractions;
 using TacticWar.Rest.Requests.Game;
@@ -24,7 +23,7 @@ namespace TacticWar.Rest.RequestsHandlers.Game
 
 
         // Properties
-        protected INewGameManager GameManager { get; private set; }
+        protected IGameManager GameManager { get; private set; }
         protected PlayerColor PlayerColor { get; private set; }
         protected IViewModelService ViewModelService { get; private set; }
 

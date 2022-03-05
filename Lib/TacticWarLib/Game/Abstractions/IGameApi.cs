@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Deck;
+﻿using TacticWar.Lib.Game.Deck;
 using TacticWar.Lib.Game.Map;
 using TacticWar.Lib.Game.Players;
 
-namespace TacticWar.Lib.Game
+namespace TacticWar.Lib.Game.Abstractions
 {
 
     public interface IGameApi

@@ -1,6 +1,4 @@
-﻿using MediatR;
-using TacticWar.Lib.Game;
-using TacticWar.Rest.ViewModels;
+﻿using TacticWar.Rest.ViewModels;
 
 namespace TacticWar.Rest.Requests.Game
 {

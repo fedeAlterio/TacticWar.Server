@@ -1,19 +1,14 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Configuration.Abstractions;
+using TacticWar.Lib.Game.Core;
+using TacticWar.Lib.Game.Core.GamePhaseHandlers;
+using TacticWar.Lib.Game.Core.Pipeline.Middlewares.Data;
 using TacticWar.Lib.Game.Deck;
 using TacticWar.Lib.Game.Deck.Abstractions;
-using TacticWar.Lib.Game.Deck.Objectives.Builders.Abstractions;
-using TacticWar.Lib.Game.GamePhases;
+using TacticWar.Lib.Game.Deck.Builders;
+using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 using TacticWar.Lib.Game.Map;
-using TacticWar.Lib.Game.Pipeline.Middlewares;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Data;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Phases;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Table;
 

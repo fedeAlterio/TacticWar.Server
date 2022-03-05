@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Deck;
+﻿using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 
 namespace TacticWar.Rest.ViewModels
 {

@@ -1,36 +1,35 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Bot;
+using TacticWar.Lib.Game.Bot.Abstractions;
+using TacticWar.Lib.Game.Builders.Abstractios;
 using TacticWar.Lib.Game.Configuration;
-using TacticWar.Lib.Game.Deck;
+using TacticWar.Lib.Game.Configuration.Abstractions;
+using TacticWar.Lib.Game.Core;
+using TacticWar.Lib.Game.Core.Abstractions;
+using TacticWar.Lib.Game.Core.Pipeline.Abstractions;
+using TacticWar.Lib.Game.Core.Pipeline.Middlewares;
+using TacticWar.Lib.Game.Core.Pipeline.Middlewares.Data;
+using TacticWar.Lib.Game.Deck.Builders;
 using TacticWar.Lib.Game.Deck.Objectives.Decks;
-using TacticWar.Lib.Game.GamePhases;
 using TacticWar.Lib.Game.Map;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Data;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Table;
+using TacticWar.Lib.Game.Table.Abstractions;
 
 namespace TacticWar.Lib.Game.Builders
 {
-    public class GameBuilder : INewGameBuilder
+    public class GameBuilder : IGameBuilder
     {
-        public INewGameConfigurator NewGame(PlayersInfoCollection playersInfo)
+        public IGameConfigurator NewGame(PlayersInfoCollection playersInfo)
         {
             return new GameConfigurator(playersInfo);
         }
 
-        private class GameConfigurator : INewGameConfigurator
+        private class GameConfigurator : IGameConfigurator
         {
             // Private fields
-            private readonly Dictionary<Type, Action<INewGameManager, object>> _gameObserversTypes = new();
+            private readonly Dictionary<Type, Action<IGameManager, object>> _gameObserversTypes = new();
             private readonly PlayersInfoCollection _playersInfoCollection;
             private readonly IServiceCollection _services;
             private IServiceProvider? _serviceProvider;
@@ -54,38 +53,27 @@ namespace TacticWar.Lib.Game.Builders
 
 
             // IGameConfiguration
-            public void AddSingleton<T>(Action<INewGameManager, T>? onGameCreated = null) where T : class
+            public void AddSingleton<T>(Action<IGameManager, T>? onGameCreated = null) where T : class
             {
                 AddSingleton<T, T>();
             }
 
-            public void AddSingleton<T, V>(Action<INewGameManager, V>? onGameCreated = null) where V : class, T where T : class
+            public void AddSingleton<T, V>(Action<IGameManager, V>? onGameCreated = null) where V : class, T where T : class
             {
                 _services.AddSingleton<T, V>();
                 _gameObserversTypes[typeof(T)] = (gameManager, v) => onGameCreated?.Invoke(gameManager, (V)v);
             }
 
-            public INewGameManager StartGame()
+            public async Task<IGameManager> StartGame()
             {
                 _serviceProvider = _services.BuildServiceProvider();
-                var gameManager = _serviceProvider.GetService<INewGameManager>()!;
+                var gameManager = _serviceProvider.GetService<IGameManager>()!;
                 NotifyObservers(gameManager);
-                gameManager.GameApi.Start();
+                await gameManager.GameApi.Start();
 
                 return gameManager;
             }
 
-
-
-            // Private
-            private void NotifyObservers(INewGameManager gameManager)
-            {
-                foreach (var (type, onCreated) in _gameObserversTypes)
-                {
-                    var observer = _serviceProvider!.GetService(type) ?? throw new InvalidOperationException($"Service {type} not registered");
-                    onCreated?.Invoke(gameManager, observer);
-                }
-            }
 
 
             // Services Registration
@@ -99,17 +87,14 @@ namespace TacticWar.Lib.Game.Builders
                 InjectGameManager(services);
                 return services;
             }
-
-       
-
+      
             private void InjectGameDependencies(IServiceCollection services)
             {
                 var gameMap = new MapBuilder().BuildNew();
                 services.AddSingleton(gameMap);
                 services.AddSingleton(new TerritoryDeckBuilder().NewDeck(gameMap));
                 services.AddSingleton(_playersInfoCollection!);
-                services.AddSingleton(provider => new ObjectivesDeckBuilder(provider).NewDeck());
-                //services.AddSingleton(provider => new AlwaysWinObjectiveDeckBuilder().NewDeck());
+                services.AddSingleton(provider => new ObjectivesDeckBuilder(provider).NewDeck());               
                 services.AddSingleton<IDiceRoller, DiceRoller>();
                 services.AddSingleton<IGameConfiguration, GameConfiguration>();
                 AddBoth<IDroppedTrisManager, CardsManager>(services);
@@ -131,7 +116,7 @@ namespace TacticWar.Lib.Game.Builders
 
             private void RegisterPipelineDependencies(IServiceCollection services)
             {
-                AddBoth<INewTurnManager, NewTurnManager>(services);
+                AddBoth<INewTurnManager, TurnManager>(services);
                 AddBoth<IGameUpdatesListener, GameUpdatesListener>(services);
                 AddBoth<IGameTerminationController, GameTerminationController>(services);
                 AddBoth<IGameStatistics, GameStatistics>(services);
@@ -144,11 +129,20 @@ namespace TacticWar.Lib.Game.Builders
 
             private void InjectGameManager(ServiceCollection services)
             {
-                services.AddSingleton<INewGameManager, NewGameManager>();
+                services.AddSingleton<IGameManager, NewGameManager>();
             }
 
 
+
             // Utils
+            private void NotifyObservers(IGameManager gameManager)
+            {
+                foreach (var (type, onCreated) in _gameObserversTypes)
+                {
+                    var observer = _serviceProvider!.GetService(type) ?? throw new InvalidOperationException($"Service {type} not registered");
+                    onCreated?.Invoke(gameManager, observer);
+                }
+            }
 
             private void AddBoth<T, V>(IServiceCollection services) where V : class, T where T : class
             {

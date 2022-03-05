@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Players;
+﻿using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace TacticWar.Lib.Tests.Attributes

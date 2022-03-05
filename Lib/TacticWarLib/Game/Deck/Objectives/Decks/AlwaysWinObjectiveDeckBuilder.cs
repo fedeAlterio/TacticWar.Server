@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Deck.Abstractions;
+﻿using TacticWar.Lib.Game.Deck.Abstractions;
+using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 using TacticWar.Lib.Game.Players.Abstractions;
 
 namespace TacticWar.Lib.Game.Deck.Objectives.Decks

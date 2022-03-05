@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.GamePhases;
-using TacticWar.Lib.Game.Pipeline;
-using TacticWar.Lib.Game.Pipeline.Middlewares;
+﻿using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Core.Pipeline;
+using TacticWar.Lib.Game.Core.Pipeline.Middlewares;
 
 namespace TacticWar.Lib.Game
 {
@@ -17,7 +12,7 @@ namespace TacticWar.Lib.Game
 
 
         // Initialization
-        public GameApiBuilder(NewTurnManager turnManager, GameUpdatesListener gameUpdatesListener, GameTerminationController gameTerminationController,
+        public GameApiBuilder(TurnManager turnManager, GameUpdatesListener gameUpdatesListener, GameTerminationController gameTerminationController,
                               ShortCircuitIfGameEnded shortCircuitIfGameEnded, GameStatistics gameStatistics, GameValidation gameValidation,
                               IdleManager idleManager, PipelineDelimiter pipelineDelimiter)
         {

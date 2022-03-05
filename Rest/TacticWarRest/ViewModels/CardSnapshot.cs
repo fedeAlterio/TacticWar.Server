@@ -1,8 +1,4 @@
 ﻿using TacticWar.Lib.Game.Deck;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TacticWar.Rest.ViewModels
 {

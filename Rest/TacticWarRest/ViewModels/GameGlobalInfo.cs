@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game;
-using TacticWar.Lib.Game.Map;
+﻿using TacticWar.Lib.Game.Map;
 using TacticWar.Lib.Game.Players.Abstractions;
 
 namespace TacticWar.Rest.ViewModels

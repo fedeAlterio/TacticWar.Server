@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using System.Threading;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Rooms.Abstractions;
 using TacticWar.Rest.Requests.Room;
 using TacticWar.Rest.ViewModels.Rooms;

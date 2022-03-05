@@ -2,24 +2,21 @@
 using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Game.GamePhases;
 using TacticWar.Lib.Game.Map;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.GamePhases.PhaseInfo;
 using TacticWar.Lib.Game.Deck.Abstractions;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Players.Abstractions;
 using TacticWar.Lib.Extensions;
 using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Table.Abstractions;
+using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 
 namespace TacticWar.Lib.Game.Table
 {
     public sealed class GameTable : IGameTable
     {
         // Events
-        public event Action<GameTable> OnStateChanged;
+        public event Action<GameTable>? OnStateChanged;
 
 
 
@@ -31,11 +28,11 @@ namespace TacticWar.Lib.Game.Table
         // Private fields
         private readonly GameTableValidator _validate;
         private readonly IDiceRoller _diceRoller;
-        private PlayerTerritory _attackFrom;
-        private PlayerTerritory _attackTo;
-        private IList<int> _attackDice;
-        private Player _attacker;
-        private Player _defender;
+        private PlayerTerritory? _attackFrom;
+        private PlayerTerritory? _attackTo;
+        private IList<int>? _attackDice;
+        private Player? _attacker;
+        private Player? _defender;
 
 
 

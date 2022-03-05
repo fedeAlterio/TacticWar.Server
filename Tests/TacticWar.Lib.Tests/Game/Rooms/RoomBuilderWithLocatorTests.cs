@@ -1,16 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Builders.Abstractios;
 using TacticWar.Lib.Game.Rooms;
 using TacticWar.Lib.Game.Rooms.Abstractions;
 using TacticWar.Lib.Tests.Attributes;
-using Xunit;
 
 namespace TacticWar.Lib.Tests.Game.Rooms
 {
@@ -33,7 +27,7 @@ namespace TacticWar.Lib.Tests.Game.Rooms
         // Utils
         private Room NewRoom()
         {
-            var gameBuilderMock = new Mock<INewGameBuilder>();
+            var gameBuilderMock = new Mock<IGameBuilder>();
             var configuration = new RoomConfiguration();
             RoomTimerBuilder timerBuilder = () => new RoomTimer(configuration);
             return new Room(gameBuilderMock.Object, timerBuilder, configuration);

@@ -1,16 +1,11 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TacticWar.Lib.Game;
 using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Builders;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Rooms;
 using TacticWar.Lib.Game.Rooms.Abstractions;
-using TacticWar.Lib.Tests.Game.Pipeline.TestsUtils;
 using TacticWar.Rest.Requests.Room;
 using TacticWar.Rest.RequestsHandlers.Room;
 using TacticWar.Rest.ViewModels.Services;
@@ -23,10 +18,10 @@ namespace TacticWar.Test.TacticWar.Rest.Tests.Utils
         {
             // Setup            
             var gameConfigurator = new GameBuilder().NewGame(playersInfo);
-            INewGameManager? gameManager = null;
+            IGameManager? gameManager = null;
             var roomMock = new Mock<IRoom>();
             roomMock.Setup(x => x.BuildGame()).Returns(() => gameConfigurator);
-            roomMock.Setup(x => x.StartGame()).Callback(() => gameManager = gameConfigurator.StartGame());
+            roomMock.Setup(x => x.StartGame()).Returns(async () => gameManager = await gameConfigurator.StartGame());
             roomMock.Setup(x => x.Players).Returns(playersInfo.Info.Select(x => new WaitingPlayer { Color = x.Color, Name = x.Name }).ToList());
             roomMock.Setup(x => x.GameManager).Returns(() => gameManager);
 

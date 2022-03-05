@@ -1,17 +1,12 @@
 ﻿using TacticWar.Lib.Extensions;
 using TacticWar.Lib.Game.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Players.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Abstractions;
 
 namespace TacticWar.Lib.Game.Deck
 {
     public class TrisManager
     {
+        // Core
         public int ArmiesFromTris(IPlayer player, IEnumerable<TerritoryCard> cards)
         {
             var armies = GetArmies(cards);
@@ -21,6 +16,7 @@ namespace TacticWar.Lib.Game.Deck
                         armies += 2;
             return armies;
         }
+
 
 
         // Utils 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using static TacticWar.Lib.Game.Rooms.Room;
-using TacticWar.Lib.Game.Rooms;
+﻿using TacticWar.Lib.Game.Rooms;
 using TacticWar.Lib.Game.Players;
 
 namespace TacticWar.Rest.ViewModels.Rooms

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using MediatR;
 using TacticWar.Rest.ViewModels.Rooms;
 using TacticWar.Rest.Requests.Room;

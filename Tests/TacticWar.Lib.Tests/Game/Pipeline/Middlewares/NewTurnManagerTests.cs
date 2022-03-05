@@ -2,23 +2,19 @@
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TacticWar.Lib.Game;
 using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Core.Pipeline.Middlewares;
 using TacticWar.Lib.Game.Deck;
 using TacticWar.Lib.Game.Deck.Abstractions;
+using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 using TacticWar.Lib.Game.GamePhases;
 using TacticWar.Lib.Game.GamePhases.PhaseInfo;
-using TacticWar.Lib.Game.Pipeline.Middlewares;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Abstractions;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Table;
 using TacticWar.Lib.Tests.Attributes;
 using TacticWar.Lib.Tests.Game.Pipeline.TestsUtils;
-using TacticWar.Rest.ViewModels.Phases;
 using TacticWar.Test.TacticWar.Lib.Tests.Utils;
 using Xunit.Abstractions;
 
@@ -35,7 +31,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
         }
 
 
-        [FactFor(nameof(NewTurnManager))]
+        [FactFor(nameof(TurnManager))]
         public void Should_StartWithPlacementPhase()
         {
             var turnManager = BuildTurnManager();
@@ -45,7 +41,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
         }
 
 
-        [FactFor(nameof(NewTurnManager.Start))]
+        [FactFor(nameof(TurnManager.Start))]
         public async Task Should_CyliclyNotifyPlacementPhaseAtStart()
         {
             // Setup
@@ -92,7 +88,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
         }
 
 
-        [FactFor(nameof(NewTurnManager))]
+        [FactFor(nameof(TurnManager))]
         public async Task Should_CorrectlyOrderTurnPhases()
         {
             // Setup
@@ -169,7 +165,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
         }
 
 
-        [FactFor(nameof(NewTurnManager.Attack))]
+        [FactFor(nameof(TurnManager.Attack))]
         public async Task ShouldCorrectlyAttackAndDefendWhenDefenceWins()
         {
             await using var exceptionCatcher = new ExceptionCatcher();
@@ -250,7 +246,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
         }
 
 
-        [FactFor(nameof(NewTurnManager.Attack))]
+        [FactFor(nameof(TurnManager.Attack))]
         public async Task ShouldCorrectlyAttackAndDefendWhenAttackWins()
         {
             await using var exceptionCatcher = new ExceptionCatcher();
@@ -351,7 +347,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
         }
 
 
-        [FactFor(nameof(NewTurnManager))]
+        [FactFor(nameof(TurnManager))]
         public async Task Sould_CorrectlyDropATris()
         {
             await using var exceptionCatcher = new ExceptionCatcher();
@@ -410,7 +406,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
         }
 
 
-        [FactFor(nameof(NewTurnManager))]
+        [FactFor(nameof(TurnManager))]
         public async Task Should_TransferAllCardsOnPlayerDefeated()
         {
             await using var exceptionCatcher = new ExceptionCatcher();
@@ -528,18 +524,18 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 
         // Utils
 
-        private NewTurnManager BuildTurnManager(out GameTable gameTable, IDiceRoller? diceRoller = null, IDeck<IObjective>? objectivesDeck = null)
+        private TurnManager BuildTurnManager(out GameTable gameTable, IDiceRoller? diceRoller = null, IDeck<IObjective>? objectivesDeck = null)
         {
             gameTable = ObjectsBuilder.NewGameTable(diceRoller, objectivesDeck);
             var trisManager = ObjectsBuilder.NewTrisManager(gameTable);
             var gameConfiguration = ObjectsBuilder.NewGameConfiguration();
-            var turnManager = new NewTurnManager(gameTable, trisManager, gameConfiguration, new())
+            var turnManager = new TurnManager(gameTable, trisManager, gameConfiguration, new())
             {
                 Next = () => Task.CompletedTask
             };
             return turnManager;
         }
 
-        private NewTurnManager BuildTurnManager(IDiceRoller? diceRoller = null) => BuildTurnManager(out _, diceRoller);
+        private TurnManager BuildTurnManager(IDiceRoller? diceRoller = null) => BuildTurnManager(out _, diceRoller);
     }
 }

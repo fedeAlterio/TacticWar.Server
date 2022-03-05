@@ -1,20 +1,18 @@
 ﻿using FluentAssertions;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Deck;
 using TacticWar.Lib.Game.Deck.Abstractions;
+using TacticWar.Lib.Game.Deck.Builders;
+using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Game.Map;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Table;
 using TacticWar.Lib.Tests.Attributes;
 using TacticWar.Lib.Tests.Game.Pipeline.TestsUtils;
-using Xunit;
 
 namespace TacticWar.Lib.Tests.Game.Table
 {

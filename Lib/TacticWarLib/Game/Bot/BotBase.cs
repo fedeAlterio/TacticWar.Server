@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TacticWar.Lib.Game.Abstractions;
+﻿using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Bot.Abstractions;
+using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.GamePhases;
-using TacticWar.Lib.Game.Pipeline.Abstractions;
-using TacticWar.Lib.Game.Pipeline.Middlewares.Abstractions;
+using TacticWar.Lib.Game.Table.Abstractions;
 
 namespace TacticWar.Lib.Game.Bot
 {
     public abstract class BotBase : IBot, IBotSettings
     {
-        // Protected fields
+        // Not public fields
         protected readonly IGameApi _gameApi;
         private readonly IGameTable _gameTable;
         protected readonly ITurnInfo _turnInfo;

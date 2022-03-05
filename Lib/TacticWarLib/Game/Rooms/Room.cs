@@ -1,17 +1,10 @@
 ﻿using TacticWar.Lib.Game.Exceptions;
-using TacticWar.Lib.Game.GamePhases;
 using TacticWar.Lib.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using TacticWar.Lib.Extensions;
 using TacticWar.Lib.Game.Rooms.Abstractions;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Lib.Game.Abstractions;
-using System.Collections.Concurrent;
+using TacticWar.Lib.Game.Builders.Abstractios;
 
 namespace TacticWar.Lib.Game.Rooms
 {
@@ -28,14 +21,14 @@ namespace TacticWar.Lib.Game.Rooms
         private Dictionary<PlayerColor, IRoomTimer> _timers = new();
         private static Dictionary<int, bool> _roomIds = new();        
         private readonly List<WaitingPlayer> _players = new();
-        private readonly INewGameBuilder _gameBuilder;
+        private readonly IGameBuilder _gameBuilder;
         private readonly RoomTimerBuilder _roomTimerBuilder;
-        private INewGameConfigurator? _gameConfigurator;
+        private IGameConfigurator? _gameConfigurator;
 
 
 
         // Initialization
-        public Room(INewGameBuilder gameBuilder, RoomTimerBuilder roomTimerBuilder, RoomConfiguration roomConfiguration)
+        public Room(IGameBuilder gameBuilder, RoomTimerBuilder roomTimerBuilder, RoomConfiguration roomConfiguration)
         {
             lock (_locker)
             {
@@ -65,7 +58,7 @@ namespace TacticWar.Lib.Game.Rooms
         public int Id { get; }
         public bool GameStarted { get; private set; }
         public IReadOnlyList<WaitingPlayer> Players => _players;
-        public INewGameManager? GameManager { get; private set; }        
+        public IGameManager? GameManager { get; private set; }        
         public WaitingPlayer? Host => _players?.FirstOrDefault();
 
 
@@ -138,7 +131,7 @@ namespace TacticWar.Lib.Game.Rooms
         }
 
 
-        public INewGameServiceCollection BuildGame()
+        public IGameServiceCollection BuildGame()
         {
             using var _ = _locker.Lock();
 
@@ -152,13 +145,13 @@ namespace TacticWar.Lib.Game.Rooms
             return _gameConfigurator;
         }
 
-        public void StartGame()
+        public async Task StartGame()
         {
             if (GameStarted)
                 throw new GameException($"Game already started!");
 
             GameStarted = true;
-            GameManager = _gameConfigurator!.StartGame();
+            GameManager =  await _gameConfigurator!.StartGame();
             //GameManager.GameTerminationController.GameEnded += OnRoomDeath;
         }
 
