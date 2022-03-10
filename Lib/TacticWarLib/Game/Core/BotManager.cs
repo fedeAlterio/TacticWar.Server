@@ -45,9 +45,9 @@ namespace TacticWar.Lib.Game.Core
 
 
         // Events
-        protected async void OnGameUpdated(IPlayer player)
+        protected void OnGameUpdated(IPlayer player)
         {
-            await PlayIfShould();
+            Task.Run(PlayIfShould);
         }
 
         private Action? OnTurnEnded { get; set; }

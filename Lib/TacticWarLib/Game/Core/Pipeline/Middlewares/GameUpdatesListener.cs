@@ -15,7 +15,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
         private readonly SemaphoreSlim _ss = new(1);
         private readonly ITurnInfo _turnInfo;
         private readonly INewTurnManager _turnManager;
-        private bool _pipelineRunning;
+        private bool _pipelineRunning;        
 
 
         // Initialization
@@ -23,8 +23,8 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
         {
             _turnInfo = turnInfo;
             _turnManager = turnManager;
-            _turnInfo.PropertyChanged += async (_, _) => await QueueGameUpdatNotifcation();
-            turnManager.TurnStateUpdated += async () => await QueueGameUpdatNotifcation();
+            _turnInfo.PropertyChanged += (_, _) => InvokeGameUpdated();
+            turnManager.TurnStateUpdated += () => InvokeGameUpdated();
         }
 
 
@@ -40,9 +40,9 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             if (_ss.CurrentCount == 0)
                 throw new InvalidOperationException($"Already doing a move");
 
+            using var _ = await _ss.WaitAsyncScoped();
             try
             {
-                using var _ = await _ss.WaitAsyncScoped();
                 _pipelineRunning = true;
                 var next = Next;
                 await next!();
@@ -50,23 +50,19 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             finally
             {
                 _pipelineRunning = false;
-                await QueueGameUpdatNotifcation();
+                InvokeGameUpdated();
             }
         }
 
 
 
         // Utils
-        private async Task QueueGameUpdatNotifcation()
-        {
-            using var _ = await _ss.WaitAsyncScoped();
-            if (!_pipelineRunning)
-                InvokeGameUpdated();
-        }
-
 
         private void InvokeGameUpdated()
         {
+            if (_pipelineRunning)
+                return;
+
             LastUpdateDate = DateTime.Now;
             GameUpdated?.Invoke(_turnInfo.CurrentActionPlayer!);
         }
