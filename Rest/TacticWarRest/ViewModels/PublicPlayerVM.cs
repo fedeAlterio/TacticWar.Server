@@ -2,7 +2,7 @@
 
 namespace TacticWar.Rest.ViewModels
 {
-    public class PublicPlayerVM : PlayerVM
+    public class PublicPlayerVM :  PlayerVM
     {
         public PublicPlayerVM(Player player) : base(player)
         {
