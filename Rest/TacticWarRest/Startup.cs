@@ -1,6 +1,7 @@
 using Microsoft.OpenApi.Models;
 using MediatR;
 using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using TacticWar.Rest.Middlewares;
 using TacticWar.Rest.ViewModels.Services;
 using TacticWar.Lib.Extensions.Microsoft.DependencyInjection.Extensions;
@@ -41,6 +42,11 @@ namespace TacticWar.Rest
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RisikoRest", Version = "v1" });
             });
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
+
             AddServices(services);
         }
 
@@ -56,10 +62,20 @@ namespace TacticWar.Rest
             app.UseCors("MyPolicy");
 
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            app.UseStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp";
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                    // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                }
             });
         }
 
