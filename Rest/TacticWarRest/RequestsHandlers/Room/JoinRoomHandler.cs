@@ -8,7 +8,7 @@ namespace TacticWar.Rest.RequestsHandlers.Room
     public record JoinRoomHandler : IRequestHandler<JoinRoomRequest, RoomSnapshot>
     {
         // Private fields
-        private readonly IRoomsManager _roomsManager;
+        readonly IRoomsManager _roomsManager;
 
 
 

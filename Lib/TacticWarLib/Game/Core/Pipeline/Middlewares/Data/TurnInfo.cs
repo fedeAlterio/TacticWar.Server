@@ -10,12 +10,12 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares.Data
     public class TurnInfo : ViewModelBase, ITurnInfo
     {
         // Private fields
-        private Player? _currentTurnPlayer;
-        private Player? _currentActionPlayer;
-        private GamePhase _currentPhase;
-        private AttackInfo? _currentAttackInfo;
-        private int _armiesToPlace;
-        private bool _waitingForArmiesPlacementAfterAttack;
+        Player? _currentTurnPlayer;
+        Player? _currentActionPlayer;
+        GamePhase _currentPhase;
+        AttackInfo? _currentAttackInfo;
+        int _armiesToPlace;
+        bool _waitingForArmiesPlacementAfterAttack;
 
 
 

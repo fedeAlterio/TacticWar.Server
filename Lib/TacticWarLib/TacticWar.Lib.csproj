@@ -1,21 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	  <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="6.3.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="xunit" Version="2.4.1" />
+    <Compile Remove="Game\Core\Pipeline\Middlewares\Helpers\**" />
+    <EmbeddedResource Remove="Game\Core\Pipeline\Middlewares\Helpers\**" />
+    <None Remove="Game\Core\Pipeline\Middlewares\Helpers\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Game\Core\Pipeline\Middlewares\Helpers\" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
+    <PackageReference Include="xunit" Version="2.9.0" />
   </ItemGroup>
 
 </Project>

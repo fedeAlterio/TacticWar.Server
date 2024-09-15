@@ -8,8 +8,8 @@ namespace TacticWar.Rest.ViewModels.Services
     public class ViewModelService : IViewModelService
     {
         // Private fields
-        private readonly GameViewModelsBuilder _viewModelsBuilder;
-        private readonly Dictionary<PlayerColor, UpdateQueue<GameSnapshot>> _snapshotUpdates = new();
+        readonly GameViewModelsBuilder _viewModelsBuilder;
+        readonly Dictionary<PlayerColor, UpdateQueue<GameSnapshot>> _snapshotUpdates = new();
 
 
 
@@ -25,7 +25,7 @@ namespace TacticWar.Rest.ViewModels.Services
 
 
         // Events handlers
-        private void OnGameUpdated()
+        void OnGameUpdated()
         {
             foreach (var (playerColor, queue) in _snapshotUpdates)
                 queue.NotifyNew(_viewModelsBuilder.GetGameSnapshot(playerColor));

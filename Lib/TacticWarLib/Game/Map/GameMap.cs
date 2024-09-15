@@ -3,7 +3,7 @@
     public class GameMap
     {
         // Private fields
-        private readonly List<Territory> _territories;
+        readonly List<Territory> _territories;
 
 
 
@@ -46,7 +46,7 @@
         public IReadOnlyList<Territory> Europe { get; }
         public IReadOnlyList<Territory> Asia { get; }
         public IReadOnlyList<Territory> Australia { get; }
-        private IReadOnlyDictionary<Continent, IReadOnlyList<Territory>> TerritoriesByContinent { get; }
+        IReadOnlyDictionary<Continent, IReadOnlyList<Territory>> TerritoriesByContinent { get; }
 
 
 

@@ -14,8 +14,8 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Private fields-
-        private IGameTable _gameTable;
-        private readonly IIdleManager _idleManager;
+        IGameTable _gameTable;
+        readonly IIdleManager _idleManager;
 
 
 
@@ -44,7 +44,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Core
-        private Task CheckVictory()
+        Task CheckVictory()
         {
             if (!TryGetWinner(out var winner, out bool shouldWait))
                 return Task.CompletedTask;
@@ -57,7 +57,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Invoke Events
-        private async void InvokeGameTerminated()
+        async void InvokeGameTerminated()
         {
             if (IsGameEnded)
                 return;
@@ -67,7 +67,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             GameEnded?.Invoke();
         }
 
-        private async void InvokeVictory(IPlayer winner, bool shouldWait)
+        async void InvokeVictory(IPlayer winner, bool shouldWait)
         {
             IsGameEnded = true;
 
@@ -88,7 +88,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Utils
-        private bool TryGetWinner(out IPlayer? winner, out bool shouldWait)
+        bool TryGetWinner(out IPlayer? winner, out bool shouldWait)
         {
             winner = _idleManager.IsGameIdle
                 ? _gameTable.Players.First()

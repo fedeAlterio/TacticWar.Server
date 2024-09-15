@@ -3,7 +3,7 @@
     public class SingleTaskMiddlewareFromAction : SingleTaskMiddleware
     {
         // Private fields
-        private readonly Func<Task> _action;
+        readonly Func<Task> _action;
 
 
 

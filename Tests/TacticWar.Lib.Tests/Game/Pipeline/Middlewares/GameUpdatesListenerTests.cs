@@ -34,7 +34,7 @@ namespace TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 
 
         // Utils
-        private ITurnManager GetTurnManager()
+        ITurnManager GetTurnManager()
         {
             var mock = new Mock<ITurnManager>();
             var playerMock = new Mock<IPlayer>();

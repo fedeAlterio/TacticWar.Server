@@ -9,10 +9,10 @@ namespace TacticWar.Lib.Game.Deck.Objectives
     public class KillColorObjective : IObjective
     {
         // Private fields
-        private readonly PlayerColor _playerColor;
-        private readonly int _totTerritoriesToConquerIfAlreadyKilled;
-        private readonly IGameStatistics _gameStatistics;
-        private readonly IGameTable _gameTable;
+        readonly PlayerColor _playerColor;
+        readonly int _totTerritoriesToConquerIfAlreadyKilled;
+        readonly IGameStatistics _gameStatistics;
+        readonly IGameTable _gameTable;
 
 
 

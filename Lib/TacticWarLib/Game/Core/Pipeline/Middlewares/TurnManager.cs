@@ -51,16 +51,16 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Private fields
-        private readonly ArmiesPlacementPhaseHandler _placementPhaseHandler;
-        private readonly AttackPhaseHandler _attackPhaseHandler;
-        private readonly FreeMovePhaseHandler _freeMovePhaseHandler;
-        private readonly PlacementAfterAttackPhaseHandler _placementAfterAttackPhaseHandler;
-        private readonly CardsManager _cardsManager;
-        private readonly IGameConfiguration _gameConfiguration;
-        private readonly TurnInfo _turnInfo;
-        private readonly IEnumerator<Player> _turnOrdererdPlayers;
-        private Task _gameTask = Task.CompletedTask;
-        private Player? _playerWhoConqueredATerritoryLastTurn;
+        readonly ArmiesPlacementPhaseHandler _placementPhaseHandler;
+        readonly AttackPhaseHandler _attackPhaseHandler;
+        readonly FreeMovePhaseHandler _freeMovePhaseHandler;
+        readonly PlacementAfterAttackPhaseHandler _placementAfterAttackPhaseHandler;
+        readonly CardsManager _cardsManager;
+        readonly IGameConfiguration _gameConfiguration;
+        readonly TurnInfo _turnInfo;
+        readonly IEnumerator<Player> _turnOrdererdPlayers;
+        Task _gameTask = Task.CompletedTask;
+        Player? _playerWhoConqueredATerritoryLastTurn;
 
 
 
@@ -88,12 +88,12 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             SetupEvents();
         }
 
-        private void SetupDroppedTrisManager(IDroppedTrisManager droppedTrisManager)
+        void SetupDroppedTrisManager(IDroppedTrisManager droppedTrisManager)
         {
             droppedTrisManager.TrisDropped += armiesCount => OnTrisDropped?.Invoke(armiesCount);
         }
 
-        private PlacementAfterAttackPhaseHandler BuildNewPlacementAfterAttackPhaseHandler(GameTable gameTable, TurnInfo turnInfo)
+        PlacementAfterAttackPhaseHandler BuildNewPlacementAfterAttackPhaseHandler(GameTable gameTable, TurnInfo turnInfo)
         {
             var ret = new PlacementAfterAttackPhaseHandler(gameTable, turnInfo);
             ret.PlacementAfterAttack += _ => turnInfo.CurrentPhase = GamePhase.PlacementAfterAttack;
@@ -101,14 +101,14 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             return ret;
         }
 
-        private ArmiesPlacementPhaseHandler BuildNewArmiesPlacementPhaseHandler(GameTable gameTable, TurnInfo turnInfo, IDroppedTrisManager trisManager)
+        ArmiesPlacementPhaseHandler BuildNewArmiesPlacementPhaseHandler(GameTable gameTable, TurnInfo turnInfo, IDroppedTrisManager trisManager)
         {
             var ret = new ArmiesPlacementPhaseHandler(gameTable, turnInfo, trisManager);
             ret.ArmiesPlacementPhase += _ => turnInfo.CurrentPhase = GamePhase.ArmiesPlacement;
             return ret;
         }
 
-        private AttackPhaseHandler BuildNewAttackPhaseHandler(GameTable gameTable, TurnInfo turnInfo, IGameConfiguration gameConfiguration)
+        AttackPhaseHandler BuildNewAttackPhaseHandler(GameTable gameTable, TurnInfo turnInfo, IGameConfiguration gameConfiguration)
         {
             var ret = new AttackPhaseHandler(gameTable, turnInfo, gameConfiguration);
             ret.AttackPhase += _ => turnInfo.CurrentPhase = GamePhase.Attack;
@@ -121,14 +121,14 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             return ret;
         }
 
-        private FreeMovePhaseHandler BuildNewFreeMovePhaseHandler(GameTable gameTable, TurnInfo turnInfo)
+        FreeMovePhaseHandler BuildNewFreeMovePhaseHandler(GameTable gameTable, TurnInfo turnInfo)
         {
             var ret = new FreeMovePhaseHandler(gameTable, turnInfo);
             ret.FreeMovePhase += _ => turnInfo.CurrentPhase = GamePhase.FreeMove;
             return ret;
         }
 
-        private void SetupEvents()
+        void SetupEvents()
         {
             TurnEnded += () => TurnNumber++;
             _placementPhaseHandler.ArmiesPlacementPhaseEnded += () => OnArmiesPlacementPhaseEnded?.Invoke();
@@ -136,7 +136,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             _freeMovePhaseHandler.FreeMovePhaseSkipped += () => OnFreeMovePhaseEnded?.Invoke();
         }
 
-        private void BuildStartTurnInfo(TurnInfo turnInfo, Player startPlayer)
+        void BuildStartTurnInfo(TurnInfo turnInfo, Player startPlayer)
         {
             turnInfo.CurrentTurnPlayer = turnInfo.CurrentActionPlayer = startPlayer;
             turnInfo.CurrentPhase = GamePhase.ArmiesPlacement;
@@ -154,7 +154,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Turn Logic
-        private void PrepareStartPhase()
+        void PrepareStartPhase()
         {
             var startArmies = ArmiesPlacementInfo.MaxArmiesOnTableAtStart(GameTable.Players.Count);
 
@@ -186,7 +186,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             StartInitialPlacementPhase();
         }
 
-        private void PreparePlayerTurns()
+        void PreparePlayerTurns()
         {
             // Event Handlers setup
             void StartArmiesPlacementPhase()
@@ -239,10 +239,10 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Event Handlers
-        private Action? OnArmiesPlacementPhaseEnded { get; set; }
-        private Action? OnAttackPhaseEnded { get; set; }
-        private Action? OnFreeMovePhaseEnded { get; set; }
-        private Action<int>? OnTrisDropped { get; set; }
+        Action? OnArmiesPlacementPhaseEnded { get; set; }
+        Action? OnAttackPhaseEnded { get; set; }
+        Action? OnFreeMovePhaseEnded { get; set; }
+        Action<int>? OnTrisDropped { get; set; }
 
 
         // Events to Task
@@ -331,20 +331,19 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Utils
-        private void InvokeStartPhaseEnded()
+        void InvokeStartPhaseEnded()
         {
             IsStartPhaseEnded = true;
             StartPhaseEnded?.Invoke();
         }
 
-        private void InvokeTurnStateUpdated(Action? doBefore = null)
+        void InvokeTurnStateUpdated(Action? doBefore = null)
         {
             doBefore?.Invoke();
             TurnStateUpdated?.Invoke();
         }
 
-
-        private void MoveToNextPlayer()
+        void MoveToNextPlayer()
         {
             do
                 _turnOrdererdPlayers.MoveNext();

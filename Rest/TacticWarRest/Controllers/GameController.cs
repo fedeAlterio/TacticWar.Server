@@ -10,7 +10,7 @@ namespace TacticWar.Rest.Controllers
     public class GameController : Controller
     {
         // Private fields
-        private readonly IMediator _mediator;
+        readonly IMediator _mediator;
 
 
 
@@ -147,16 +147,16 @@ namespace TacticWar.Rest.Controllers
 
 
         // Utils
-        private T NewAuthenticatedRequest<T>() where T : AuthenticatedRoomRequest, new()
+        T NewAuthenticatedRequest<T>() where T : AuthenticatedRoomRequest, new()
             => new() { PlayerName = PlayerName, PlayerSecret = PlayerSecret, RoomId = RoomId };
 
-        private T NewAuthenticatedRequest<T, V>() where T : AuthenticatedRoomRequest<V>, new()
+        T NewAuthenticatedRequest<T, V>() where T : AuthenticatedRoomRequest<V>, new()
             => NewAuthenticatedRequest<T>();
 
-        private Task<TResponse> SendAuthenticatedRequest<TResponse>(AuthenticatedRoomRequest<TResponse> request)
+        Task<TResponse> SendAuthenticatedRequest<TResponse>(AuthenticatedRoomRequest<TResponse> request)
             => _mediator.Send<TResponse>(request);
 
-        private Task SendAuthenticatedRequest(AuthenticatedRoomRequest request)
+        Task SendAuthenticatedRequest(AuthenticatedRoomRequest request)
             => _mediator.Send(request);
     }
 }

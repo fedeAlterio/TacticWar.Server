@@ -9,13 +9,13 @@ namespace TacticWar.Lib.Game.Core.Pipeline
     public class GamePipeline : IGameApi, IGamePipelineBuilder
     {
         // Private fields
-        private readonly List<Func<IGamePipelineMiddleware>> _pipelineBuilders = new();
-        private readonly List<IGamePipelineMiddleware> _pipeline = new();
+        readonly List<Func<IGamePipelineMiddleware>> _pipelineBuilders = new();
+        readonly List<IGamePipelineMiddleware> _pipeline = new();
 
 
 
         // Initialization
-        private GamePipeline() { }
+        GamePipeline() { }
         public static IGamePipelineBuilder New() => new GamePipeline();
 
 
@@ -119,7 +119,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline
 
 
         // Utils
-        private async Task ForEach(Func<IGamePipelineMiddleware, Task> action)
+        async Task ForEach(Func<IGamePipelineMiddleware, Task> action)
         {
             var pipeline = _pipeline.ToList();
             var i = 0;

@@ -10,10 +10,10 @@ namespace TacticWar.Lib.Game.Bot
     {
         // Not public fields
         protected readonly IGameApi _gameApi;
-        private readonly IGameTable _gameTable;
+        readonly IGameTable _gameTable;
         protected readonly ITurnInfo _turnInfo;
-        private readonly IGameTerminationController _gameTerminationController;
-        private readonly Dictionary<GamePhase, Func<Task>> _commandsByPhase;
+        readonly IGameTerminationController _gameTerminationController;
+        readonly Dictionary<GamePhase, Func<Task>> _commandsByPhase;
         
 
 
@@ -27,7 +27,7 @@ namespace TacticWar.Lib.Game.Bot
             _commandsByPhase = BuildCommands();
         }
 
-        private Dictionary<GamePhase, Func<Task>> BuildCommands() => new()
+        Dictionary<GamePhase, Func<Task>> BuildCommands() => new()
         {
             { GamePhase.ArmiesPlacement, Try(OnPlacementPhase) },
             { GamePhase.Attack, Try(OnAttackPhase) },
@@ -44,7 +44,7 @@ namespace TacticWar.Lib.Game.Bot
         
 
         // Events
-        private Task OnAttackPhase()
+        Task OnAttackPhase()
         {
             return _gameTable.WaitingForDefence 
                 ? OnDefence()
@@ -84,7 +84,7 @@ namespace TacticWar.Lib.Game.Bot
 
 
         // Utils
-        private Func<Task> Try(Func<Task> action) => async () =>
+        Func<Task> Try(Func<Task> action) => async () =>
         {
             if (IsPlaying)
                 throw new InvalidOperationException($"Bot already Playing");

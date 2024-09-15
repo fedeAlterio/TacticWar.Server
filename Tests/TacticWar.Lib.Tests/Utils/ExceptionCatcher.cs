@@ -13,7 +13,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Utils
 
 
         // Private fields
-        private List<Task> _tasks = new ();
+        List<Task> _tasks = new ();
 
 
 
@@ -24,8 +24,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Utils
         public Action<T> Action<T>(Func<T, Task> asyncFunc) => x => DoAsync(async () => await asyncFunc.Invoke(x)).Invoke();
         public async Task ThrowIfAnyException() => await Task.WhenAll(_tasks);
 
-
-        private async Task TryDo(Func<Task> asyncAction)
+        async Task TryDo(Func<Task> asyncAction)
         {
             try
             {

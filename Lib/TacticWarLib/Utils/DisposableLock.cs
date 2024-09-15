@@ -3,8 +3,8 @@
     public struct DisposableLock : IDisposable
     {
         // Private fields
-        private readonly object _locker;
-        private bool _lockWasTaken;
+        readonly object _locker;
+        bool _lockWasTaken;
 
 
         

@@ -15,8 +15,8 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Private fields
-        private readonly GameTable _gameTable;
-        private readonly TurnInfo _turnInfo;
+        readonly GameTable _gameTable;
+        readonly TurnInfo _turnInfo;
 
 
 
@@ -54,12 +54,12 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Utils
-        private void InvokeFreeMoveSkipped()
+        void InvokeFreeMoveSkipped()
         {
             FreeMovePhaseSkipped?.Invoke();
         }
 
-        private void InvokeFreeMovePhase()
+        void InvokeFreeMovePhase()
         {
             var info = new FreeMovePhaseInfo();
             FreeMovePhase?.Invoke(info);

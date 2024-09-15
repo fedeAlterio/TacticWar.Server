@@ -8,7 +8,7 @@ namespace TacticWar.Lib.Game.Table
     internal class GameTableValidator
     {
         // Private fields
-        private readonly GameTable _gameTable;
+        readonly GameTable _gameTable;
 
 
 

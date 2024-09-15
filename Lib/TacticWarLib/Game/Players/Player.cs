@@ -10,8 +10,8 @@ namespace TacticWar.Lib.Game.Players
     public class Player : IPlayer
     {
         // Private fields
-        private readonly Dictionary<Territory, PlayerTerritory> _territories = new();
-        private readonly List<TerritoryCard> _cards = new();
+        readonly Dictionary<Territory, PlayerTerritory> _territories = new();
+        readonly List<TerritoryCard> _cards = new();
 
 
 

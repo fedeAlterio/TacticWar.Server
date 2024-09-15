@@ -23,33 +23,34 @@
 
         // Continents
         #region Continents
-        private static IEnumerable<Territory> NorthAmerica() => new[]
+
+        static IEnumerable<Territory> NorthAmerica() => new[]
         {
             Alaska, NorthWestTerritory, Alberta,
             Ontario, Quebec, Greenland,
             WesternUnitedStates, EasternUnitedStates, CentralAmerica
         };
 
-        private static IEnumerable<Territory> SouthAmerica() => new[]
+        static IEnumerable<Territory> SouthAmerica() => new[]
         {
             Venezuela, Brazil, Peru,
             Argentina
         };
 
-        private static IEnumerable<Territory> Africa() => new[]
+        static IEnumerable<Territory> Africa() => new[]
         {
             NorthAfrica, Egypt, EastAfrica,
             Congo, SouthAfrica, Madagascar
         };
 
-        private static IEnumerable<Territory> Europe() => new[]
+        static IEnumerable<Territory> Europe() => new[]
         {
             Iceland, GreatBritain, Scandinavia,
             NorthenEurope, WesternEurope, SouthernEurope,
             Ukraine
         };
 
-        private static IEnumerable<Territory> Asia() => new[]
+        static IEnumerable<Territory> Asia() => new[]
         {
             MiddleEast, Afghanistan, Ural,
             Siberia, Yakutsk, Irkutsk,
@@ -57,7 +58,7 @@
             China, India, Siam
         };
 
-        private static IEnumerable<Territory> Australia() => new[]
+        static IEnumerable<Territory> Australia() => new[]
         {
             Indonesia, NewGuinea, WesternAustralia,
             EasternAustralia
@@ -415,7 +416,7 @@
 
 
         // Utils
-        private static void InitializeNeighbors()
+        static void InitializeNeighbors()
         {
             // North America
             Alaska.Neighbors = new List<Territory>

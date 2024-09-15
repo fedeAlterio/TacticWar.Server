@@ -20,7 +20,7 @@ namespace TacticWar.Lib.Game.Deck
 
 
         // Utils 
-        private int GetArmies(IEnumerable<TerritoryCard> cards)
+        int GetArmies(IEnumerable<TerritoryCard> cards)
         {
             var tris = cards.ToList();
             if (tris.Count != 3)

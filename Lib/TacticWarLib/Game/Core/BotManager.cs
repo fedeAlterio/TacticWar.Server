@@ -10,11 +10,11 @@ namespace TacticWar.Lib.Game.Core
     public class BotManager : IBotManager
     {
         // Private fields
-        private readonly Dictionary<PlayerColor, IBot> _botsByPlayer = new();
-        private readonly IBotCreator _botCreator;
-        private readonly INewTurnManager _turnManager;
-        private readonly PlayersInfoCollection _playersInfoCollection;
-        private readonly SemaphoreSlim _ss = new(1);
+        readonly Dictionary<PlayerColor, IBot> _botsByPlayer = new();
+        readonly IBotCreator _botCreator;
+        readonly INewTurnManager _turnManager;
+        readonly PlayersInfoCollection _playersInfoCollection;
+        readonly SemaphoreSlim _ss = new(1);
 
 
 
@@ -29,7 +29,7 @@ namespace TacticWar.Lib.Game.Core
             turnManager.TurnEnded += () => OnTurnEnded?.Invoke();
         }
 
-        private void AddBots(PlayersInfoCollection playersInfoCollection)
+        void AddBots(PlayersInfoCollection playersInfoCollection)
         {
             foreach (var playerInfo in playersInfoCollection.Info)
                 if (playerInfo.isBot)
@@ -50,7 +50,7 @@ namespace TacticWar.Lib.Game.Core
             Task.Run(PlayIfShould);
         }
 
-        private Action? OnTurnEnded { get; set; }
+        Action? OnTurnEnded { get; set; }
 
 
 
@@ -91,7 +91,7 @@ namespace TacticWar.Lib.Game.Core
 
 
         // Utils
-        private async Task PlayIfShould()
+        async Task PlayIfShould()
         {
             using var _ = await _ss.WaitAsyncScoped();
 
@@ -111,13 +111,12 @@ namespace TacticWar.Lib.Game.Core
             }
         }
 
-        private bool ShouldPlayABot(PlayerColor color, out IBot? bot)
+        bool ShouldPlayABot(PlayerColor color, out IBot? bot)
         {
             return _botsByPlayer.TryGetValue(color, out bot);
         }
 
-
-        private async Task PlayOneStepWith(IBot bot)
+        async Task PlayOneStepWith(IBot bot)
         {
             try
             {
@@ -128,6 +127,5 @@ namespace TacticWar.Lib.Game.Core
                 Console.WriteLine(e);
             }
         }
-
     }
 }

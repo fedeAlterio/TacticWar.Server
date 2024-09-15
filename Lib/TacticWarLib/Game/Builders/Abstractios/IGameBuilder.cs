@@ -5,7 +5,7 @@ namespace TacticWar.Lib.Game.Builders.Abstractios
 {
     public interface IGameBuilder
     {
-        IGameConfigurator NewGame(PlayersInfoCollection playersInfo);
+        IGameConfigurator NewGame(GameStartupInformation gameStartupInformation);
     }
 
     public interface IGameConfigurator : IGameServiceCollection

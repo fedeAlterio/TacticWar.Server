@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TacticWar.Lib.Game.Deck.Abstractions;
 using TacticWar.Lib.Game.Deck.Objectives.Abstractions;
 using TacticWar.Lib.Game.Deck.Objectives.Builders.Abstractions;
@@ -9,7 +8,7 @@ namespace TacticWar.Lib.Game.Deck.Objectives.Decks
     public class ObjectivesDeckBuilder
     {
         // Private fields
-        private readonly IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
 
 

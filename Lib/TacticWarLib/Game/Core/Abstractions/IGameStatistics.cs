@@ -7,7 +7,7 @@ namespace TacticWar.Lib.Game.Core.Abstractions
         IReadOnlyDictionary<IPlayer, IPlayer> Kills { get; }
         IReadOnlySet<IPlayer> AlivePlayers { get; }
         IReadOnlySet<IPlayer> DeadPlayers { get; }
-        bool TryGetKiller(IPlayer victim, out IPlayer killer);
+        bool TryGetKiller(IPlayer victim, out IPlayer? killer);
         bool IsAlive(IPlayer player);
         bool IsDead(IPlayer player);
     }

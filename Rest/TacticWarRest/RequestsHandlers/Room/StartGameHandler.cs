@@ -10,8 +10,8 @@ namespace TacticWar.Rest.RequestsHandlers.Room
     public record StartGameHandler : IRequestHandler<StartGameRequest>
     {
         // Private fields
-        private readonly IRoomsManager _roomsManager;
-        private readonly IViewModelsLocator _viewModelsLocator;
+        readonly IRoomsManager _roomsManager;
+        readonly IViewModelsLocator _viewModelsLocator;
 
 
 
@@ -25,27 +25,26 @@ namespace TacticWar.Rest.RequestsHandlers.Room
 
 
         // Core
-        public async Task<Unit> Handle(StartGameRequest request, CancellationToken cancellationToken)
+        public async Task Handle(StartGameRequest request, CancellationToken cancellationToken)
         {
             var room = await _roomsManager.FindById(request.RoomId);
             var gameServices = room.BuildGame();
             RegisterGameServices(gameServices);
             AddBot(gameServices, room.Players.Skip(1).First().Color);
             await room.StartGame();
-            return new Unit();
         }
 
 
 
         // Utils
-        private void RegisterGameServices(IGameServiceCollection gameServices)
+        void RegisterGameServices(IGameServiceCollection gameServices)
         {
             gameServices.AddSingleton<GameViewModelsBuilder>();
             gameServices.AddSingleton<IViewModelService, ViewModelService>((gameManager, vm) => _viewModelsLocator.RegisterViewModel(gameManager, vm));
             
         }
 
-        private void AddBot(IGameServiceCollection gameServices, PlayerColor color)
+        void AddBot(IGameServiceCollection gameServices, PlayerColor color)
         {
             
         }

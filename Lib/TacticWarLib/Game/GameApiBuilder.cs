@@ -7,16 +7,17 @@ namespace TacticWar.Lib.Game
     public class GameApiBuilder
     {
         // Private fields
-        private readonly IGamePipelineBuilder _gamePipelineBuilder;
+        readonly IGamePipelineBuilder _gamePipelineBuilder;
 
 
 
         // Initialization
         public GameApiBuilder(TurnManager turnManager, GameUpdatesListener gameUpdatesListener, GameTerminationController gameTerminationController,
                               ShortCircuitIfGameEnded shortCircuitIfGameEnded, GameStatistics gameStatistics, GameValidation gameValidation,
-                              IdleManager idleManager, PipelineDelimiter pipelineDelimiter)
+                              IdleManager idleManager, PipelineDelimiter pipelineDelimiter, GameLogging gameLogging)
         {
             _gamePipelineBuilder = GamePipeline.New()
+                                               .Add(gameLogging)
                  .Add(gameUpdatesListener)
                  .Add(pipelineDelimiter)
                  .Add(shortCircuitIfGameEnded)

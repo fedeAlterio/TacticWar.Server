@@ -1,5 +1,6 @@
 ﻿using System.Timers;
 using TacticWar.Lib.Utils.Timers.Abstractions;
+using ITimer = TacticWar.Lib.Utils.Timers.Abstractions.ITimer;
 
 namespace TacticWar.Lib.Utils.Timers
 {
@@ -11,7 +12,7 @@ namespace TacticWar.Lib.Utils.Timers
 
 
         // Private fields
-        private readonly System.Timers.Timer _timer;
+        readonly System.Timers.Timer _timer;
 
 
 
@@ -22,7 +23,7 @@ namespace TacticWar.Lib.Utils.Timers
             _timer.Elapsed += Timer_Elapsed;
         }
 
-        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             Elapsed?.Invoke();
         }

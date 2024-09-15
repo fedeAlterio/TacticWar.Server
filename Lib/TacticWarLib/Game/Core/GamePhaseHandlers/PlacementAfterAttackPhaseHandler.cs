@@ -13,9 +13,9 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Private fields
-        private readonly GameTable _gameTable;
-        private readonly TurnInfo _turnInfo;
-        private AttackInfo? _attackInfo;
+        readonly GameTable _gameTable;
+        readonly TurnInfo _turnInfo;
+        AttackInfo? _attackInfo;
 
 
 
@@ -47,7 +47,7 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Utils
-        private void InvokePlacementAfterAttack(AttackInfo attackInfo)
+        void InvokePlacementAfterAttack(AttackInfo attackInfo)
         {
             _turnInfo.WaitingForArmiesPlacementAfterAttack = false;
             PlacementAfterAttack?.Invoke(attackInfo);

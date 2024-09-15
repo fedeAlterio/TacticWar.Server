@@ -16,14 +16,14 @@ namespace TacticWar.Lib.Game.Rooms
 
 
         // Private fields
-        private static Random _random = new();
-        private static readonly object _locker = new();
-        private Dictionary<PlayerColor, IRoomTimer> _timers = new();
-        private static Dictionary<int, bool> _roomIds = new();        
-        private readonly List<WaitingPlayer> _players = new();
-        private readonly IGameBuilder _gameBuilder;
-        private readonly RoomTimerBuilder _roomTimerBuilder;
-        private IGameConfigurator? _gameConfigurator;
+        static Random _random = new();
+        static readonly object _locker = new();
+        Dictionary<PlayerColor, IRoomTimer> _timers = new();
+        static Dictionary<int, bool> _roomIds = new();
+        readonly List<WaitingPlayer> _players = new();
+        readonly IGameBuilder _gameBuilder;
+        readonly RoomTimerBuilder _roomTimerBuilder;
+        IGameConfigurator? _gameConfigurator;
 
 
 
@@ -39,9 +39,7 @@ namespace TacticWar.Lib.Game.Rooms
             _roomTimerBuilder = roomTimerBuilder;
         }
 
-  
-
-        private static int NewId()
+        static int NewId()
         {
             int ret;            
             do
@@ -64,7 +62,7 @@ namespace TacticWar.Lib.Game.Rooms
 
 
         // Events
-        private void OnPlayerDisconnected(PlayerColor color)
+        void OnPlayerDisconnected(PlayerColor color)
         {
             if (GameStarted)
                 return;
@@ -76,7 +74,7 @@ namespace TacticWar.Lib.Game.Rooms
                 OnRoomDeath();
         }
 
-        private async void OnRoomDeath()
+        async void OnRoomDeath()
         {
             await Task.Delay(Configuration.DestroyRoomOnRoomDeathDelay);
             DeadRoom?.Invoke(this);
@@ -140,7 +138,8 @@ namespace TacticWar.Lib.Game.Rooms
 
             var players = _players.Select(x => new PlayerInfo(x.Name, x.Color, x.IsBot)).ToList();
             var playersInfoCollection = new PlayersInfoCollection(players);
-            _gameConfigurator = _gameBuilder.NewGame(playersInfoCollection);
+            var gameStartupInfo = new GameStartupInformation(playersInfoCollection, Id);
+            _gameConfigurator = _gameBuilder.NewGame(gameStartupInfo);
 
             return _gameConfigurator;
         }
@@ -178,7 +177,7 @@ namespace TacticWar.Lib.Game.Rooms
 
 
         // Utils
-        private void AddTimer(PlayerColor playerColor)
+        void AddTimer(PlayerColor playerColor)
         {
             var timer = _roomTimerBuilder!.Invoke();
             timer.Elapsed += () =>  OnPlayerDisconnected(playerColor);

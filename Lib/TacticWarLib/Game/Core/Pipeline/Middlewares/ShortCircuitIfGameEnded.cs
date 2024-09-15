@@ -5,8 +5,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
     public class ShortCircuitIfGameEnded : SingleTaskMiddleware
     {
         // Private fields
-        private IGameTerminationController _gameTerminationController;
-
+        IGameTerminationController _gameTerminationController;
 
 
         // Initialization
@@ -14,7 +13,6 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
         {
             _gameTerminationController = gameTerminationController;
         }
-
 
 
         // Core

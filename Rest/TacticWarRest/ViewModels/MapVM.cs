@@ -21,7 +21,7 @@ namespace TacticWar.Rest.ViewModels
 
         // Ordered by Id
 
-        private List<TerritoryVM> _territories;
+        List<TerritoryVM> _territories;
         public List<TerritoryVM> Territories
         {
             get => _territories;

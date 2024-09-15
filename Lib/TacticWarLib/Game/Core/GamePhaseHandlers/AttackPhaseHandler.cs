@@ -19,9 +19,9 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Private fields
-        private readonly TurnInfo _turnInfo;
-        private readonly IGameConfiguration _gameConfiguration;
-        private readonly GameTable _gameTable;
+        readonly TurnInfo _turnInfo;
+        readonly IGameConfiguration _gameConfiguration;
+        readonly GameTable _gameTable;
 
 
 
@@ -36,8 +36,8 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Properties
-        private bool WaitingForDefence => CurrentAttackPhaseInfo?.DefenceDice == null;
-        private AttackPhaseInfo? CurrentAttackPhaseInfo { get; set; }
+        bool WaitingForDefence => CurrentAttackPhaseInfo?.DefenceDice == null;
+        AttackPhaseInfo? CurrentAttackPhaseInfo { get; set; }
 
 
 
@@ -88,7 +88,7 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Utils
-        private void OnTerritoryConquered(AttackInfo attackInfo)
+        void OnTerritoryConquered(AttackInfo attackInfo)
         {
             var defenderDefeated = attackInfo.Defender.Territories.Count == 0;
             if (defenderDefeated)
@@ -96,39 +96,37 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
             InvokeTerritoryConquered(attackInfo);
         }
 
-
-        private Player PlayerFromTerritory(Territory territory)
+        Player PlayerFromTerritory(Territory territory)
         {
             return _gameTable.Players
                 .First(x => x.Territories.ContainsKey(territory));
         }
 
-        private PlayerTerritory PlayerTerritoryFromTerritory(Territory territory)
+        PlayerTerritory PlayerTerritoryFromTerritory(Territory territory)
         {
             var player = PlayerFromTerritory(territory);
             return player.Territories[territory];
         }
 
-
-        private void InvokePlayerDeafeated(AttackInfo attackInfo)
+        void InvokePlayerDeafeated(AttackInfo attackInfo)
         {
             PlayerDefeated?.Invoke(attackInfo);
         }
 
-        private void InvokeAttackPhase(AttackPhaseInfo info)
+        void InvokeAttackPhase(AttackPhaseInfo info)
         {
             CurrentAttackPhaseInfo = info;
             AttackPhase?.Invoke(info);
         }
 
-        private async void InvokeTerritoryConquered(AttackInfo info)
+        async void InvokeTerritoryConquered(AttackInfo info)
         {
             _turnInfo.WaitingForArmiesPlacementAfterAttack = true;
             await Task.Delay(_gameConfiguration.DelayAfterTerritoryConqueredMs);
             TerritoryConquered?.Invoke(info);
         }
 
-        private void InvokeAttackSkipped()
+        void InvokeAttackSkipped()
         {
             AttackSkipped?.Invoke();
         }

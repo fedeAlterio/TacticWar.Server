@@ -10,7 +10,7 @@ namespace TacticWar.Rest.Controllers
     public class RoomsController : ControllerBase
     {
         // Private fields
-        private readonly IMediator _mediator;
+        readonly IMediator _mediator;
 
 
 

@@ -6,8 +6,8 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
     public class PipelineDelimiter : SingleTaskMiddleware, IPipelineDelimiter
     {
         // Private fields
-        private TaskCompletionSource<object?> _pipelineFreeTcs = new();
-        private readonly SemaphoreSlim _ss = new(1);
+        TaskCompletionSource<object?> _pipelineFreeTcs = new();
+        readonly SemaphoreSlim _ss = new(1);
 
 
 

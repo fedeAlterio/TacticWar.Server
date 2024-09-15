@@ -12,9 +12,9 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
     public class GameValidation : GamePipelineMiddleware
     {
         // Private fields
-        private readonly INewTurnManager _turnManager;
-        private readonly IGameTable _gameTable;
-        private readonly ITurnInfo _turnInfo;
+        readonly INewTurnManager _turnManager;
+        readonly IGameTable _gameTable;
+        readonly ITurnInfo _turnInfo;
 
 
 
@@ -117,49 +117,49 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Assertions
-        private void AssertIsPlayerTurn(PlayerColor color)
+        void AssertIsPlayerTurn(PlayerColor color)
         {
             if (_turnInfo!.CurrentActionPlayer!.Color != color)
                 throw new GameException($"It's not turn of {color}");
         }
 
-        private void AssertNotWaitingAfterAttackPlacement()
+        void AssertNotWaitingAfterAttackPlacement()
         {
             if (_turnInfo.WaitingForArmiesPlacementAfterAttack)
                 throw new GameException($"You have to place your armies before");
         }
 
-        private void AssertNotWaitingForDefence()
+        void AssertNotWaitingForDefence()
         {
             if (_gameTable.WaitingForDefence)
                 throw new GameException($"You need to wait the defence to roll before!");
         }
 
-        private void AssertZeroArmiesToPlace()
+        void AssertZeroArmiesToPlace()
         {
             if (_turnInfo.ArmiesToPlace > 0)
                 throw new GameException($"You still have armies to place");
         }
 
-        private void AssertIsPlacementPhase()
+        void AssertIsPlacementPhase()
         {
             if (_turnInfo.CurrentPhase != GamePhase.ArmiesPlacement)
                 throw new GameException($"We are not in Placement phase");
         }
 
-        private void AssertIsAttackPhase()
+        void AssertIsAttackPhase()
         {
             if (_turnInfo.CurrentPhase != GamePhase.Attack)
                 throw new GameException($"We are not in Attacking phase");
         }
 
-        private void AssertIsMovementPhase()
+        void AssertIsMovementPhase()
         {
             if (_turnInfo.CurrentPhase != GamePhase.FreeMove)
                 throw new GameException($"We are not in Free move phase");
         }
 
-        private void AssertIsPlacingAfterAttackPhase()
+        void AssertIsPlacingAfterAttackPhase()
         {
             if (_turnInfo.CurrentPhase != GamePhase.PlacementAfterAttack)
                 throw new GameException($"We are not in Place after attack phase!");

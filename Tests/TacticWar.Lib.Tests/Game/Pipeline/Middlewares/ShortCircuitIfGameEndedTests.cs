@@ -31,7 +31,7 @@ namespace TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 
 
         // Utils
-        private IGameTerminationController GetGameTerminationController(Func<bool> gameEndedGetter)
+        IGameTerminationController GetGameTerminationController(Func<bool> gameEndedGetter)
         {
             var gameTerminationController = new Mock<IGameTerminationController>();
             gameTerminationController.Setup(x => x.IsGameEnded).Returns(gameEndedGetter);

@@ -5,7 +5,7 @@ namespace TacticWar.Lib.Game.Rooms
     public class RoomBuilderWithLocator : IRoomBuilder
     {
         // Private fields
-        private readonly IServiceProvider _serviceProvider;
+        readonly IServiceProvider _serviceProvider;
 
 
 

@@ -17,7 +17,7 @@ namespace TacticWar.Lib.Extensions.Microsoft.DependencyInjection.Extensions
 
 
         // Utils
-        private static void InstallServices(IServiceCollection services)
+        static void InstallServices(IServiceCollection services)
         {
             var installers = typeof(ServiceCollectionExtensions).Assembly.GetTypes()
                 .Where(t => typeof(IServicesInstaller).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)

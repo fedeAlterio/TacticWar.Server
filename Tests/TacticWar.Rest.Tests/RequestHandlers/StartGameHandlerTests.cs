@@ -2,6 +2,7 @@
 using Moq;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Builders;
 using TacticWar.Lib.Game.Rooms;
@@ -21,7 +22,7 @@ namespace TacticWar.Test.TacticWar.Rest.Tests.RequestHandlers
         {
             // Setup
             var playersInfo = ObjectsBuilder.NewPlayersInfoCollection();
-            var gameConfigurator = new GameBuilder().NewGame(playersInfo);
+            var gameConfigurator = new GameBuilder(new ServiceCollection().BuildServiceProvider()).NewGame(new(playersInfo, 1));
             IGameManager? gameManager = null;
             var roomMock = new Mock<IRoom>();
             roomMock.Setup(x => x.BuildGame()).Returns(() => gameConfigurator);

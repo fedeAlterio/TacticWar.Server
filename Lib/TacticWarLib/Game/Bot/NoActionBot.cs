@@ -17,7 +17,7 @@ namespace TacticWar.Lib.Game.Bot
 
 
         // Properties
-        private PlayerColor CurrentActionPlayer => _turnInfo.CurrentActionPlayer!.Color;
+        PlayerColor CurrentActionPlayer => _turnInfo.CurrentActionPlayer!.Color;
 
 
 

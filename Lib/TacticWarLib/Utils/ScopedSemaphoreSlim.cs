@@ -2,7 +2,7 @@
 {
     public struct ScopedSemaphoreSlim : IDisposable
     {
-        private SemaphoreSlim _ss;
+        SemaphoreSlim _ss;
         
         
         public static async Task<ScopedSemaphoreSlim> WaitAsync(SemaphoreSlim ss)

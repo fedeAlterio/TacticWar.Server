@@ -18,11 +18,10 @@ namespace TacticWar.Rest.RequestsHandlers.Game
 
 
         // Core
-        public async Task<Unit> Handle(TAuthenticatedRequest request, CancellationToken cancellationToken)
+        public async Task Handle(TAuthenticatedRequest request, CancellationToken cancellationToken)
         {
             await Authenticate(request);
             await HandleOnAuthenticated(request, cancellationToken);
-            return new();
         }
 
         protected abstract Task HandleOnAuthenticated(TAuthenticatedRequest request, CancellationToken cancellationToken);

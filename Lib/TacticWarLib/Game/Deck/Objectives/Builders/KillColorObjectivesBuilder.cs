@@ -9,8 +9,8 @@ namespace TacticWar.Lib.Game.Deck.Objectives.Builders
     public class KillColorObjectivesBuilder : IObjectivesBuilder
     {
         // Private fields
-        private readonly IGameStatistics _gameStatistics;
-        private readonly IGameTable _gameTable;
+        readonly IGameStatistics _gameStatistics;
+        readonly IGameTable _gameTable;
 
 
 
@@ -37,6 +37,6 @@ namespace TacticWar.Lib.Game.Deck.Objectives.Builders
 
 
         // Utils
-        private KillColorObjective KillColor(PlayerColor color) => new(color, 24, _gameStatistics, _gameTable);
+        KillColorObjective KillColor(PlayerColor color) => new(color, 24, _gameStatistics, _gameTable);
     }
 }

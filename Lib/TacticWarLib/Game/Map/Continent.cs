@@ -16,7 +16,7 @@ namespace TacticWar.Lib.Game.Map
 
 
         // Initialization
-        private Continent([CallerMemberName] string name = "")
+        Continent([CallerMemberName] string name = "")
         {
             Name = name;
         }

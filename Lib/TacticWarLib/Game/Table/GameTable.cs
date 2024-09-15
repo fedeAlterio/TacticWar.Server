@@ -21,18 +21,18 @@ namespace TacticWar.Lib.Game.Table
 
 
         // Static
-        private static readonly Random _random = new();
+        static readonly Random _random = new();
 
 
 
         // Private fields
-        private readonly GameTableValidator _validate;
-        private readonly IDiceRoller _diceRoller;
-        private PlayerTerritory? _attackFrom;
-        private PlayerTerritory? _attackTo;
-        private IList<int>? _attackDice;
-        private Player? _attacker;
-        private Player? _defender;
+        readonly GameTableValidator _validate;
+        readonly IDiceRoller _diceRoller;
+        PlayerTerritory? _attackFrom;
+        PlayerTerritory? _attackTo;
+        IList<int>? _attackDice;
+        Player? _attacker;
+        Player? _defender;
 
 
 
@@ -50,8 +50,7 @@ namespace TacticWar.Lib.Game.Table
             _validate = new(this);
         }
 
-
-        private List<Player> CreatePlayers(IReadOnlyList<PlayerInfo> playersInfo)
+        List<Player> CreatePlayers(IReadOnlyList<PlayerInfo> playersInfo)
         {
             if (playersInfo.Distinct().Count() < playersInfo.Count)
                 throw new GameException($"There are 2 players with the same name!");
@@ -62,14 +61,14 @@ namespace TacticWar.Lib.Game.Table
             return players;
         }
 
-        private Player PlayerFromPlayerInfo(string name, PlayerColor color) => new()
+        Player PlayerFromPlayerInfo(string name, PlayerColor color) => new()
         {
             Name = name,
             Color = color,
             Objective = DrawObjective()
         };
 
-        private void AssignStartTerritories(IList<Player> players)
+        void AssignStartTerritories(IList<Player> players)
         {
             var territories = Map.Territories.ToList();
             territories.Shuffle();            
@@ -77,7 +76,7 @@ namespace TacticWar.Lib.Game.Table
                 player.AddTerritory(territory);
         }
 
-        private void AssignStartArmies(IEnumerable<Player> players)
+        void AssignStartArmies(IEnumerable<Player> players)
         {
             foreach (var player in players)
                 foreach (var territory in player.Territories.Values)
@@ -92,7 +91,7 @@ namespace TacticWar.Lib.Game.Table
         public bool WaitingForDefence { get; private set; }
         public bool WaitingForArmiesMovement { get; private set; }
         public IDeck<TerritoryCard> Deck { get; private set; }
-        private IDeck<IObjective> ObjectivesDeck { get; set; }
+        IDeck<IObjective> ObjectivesDeck { get; set; }
         IReadOnlyList<IPlayer> IGameTable.Players => Players;
 
 
@@ -194,13 +193,13 @@ namespace TacticWar.Lib.Game.Table
 
 
         // Utils
-        private IObjective DrawObjective()
+        IObjective DrawObjective()
         {
             ObjectivesDeck.Draw(out var ret);
             return ret;
-        }    
+        }
 
-        private IList<int> RollDice(int diceCount)
+        IList<int> RollDice(int diceCount)
         {
             return Enumerable.Range(0, diceCount)
                 .Select(_ =>_diceRoller.RollDice())
@@ -210,7 +209,7 @@ namespace TacticWar.Lib.Game.Table
 
 
         // Invoking events
-        private void OnGameStateChanged()
+        void OnGameStateChanged()
         {
             OnStateChanged?.Invoke(this);
         }

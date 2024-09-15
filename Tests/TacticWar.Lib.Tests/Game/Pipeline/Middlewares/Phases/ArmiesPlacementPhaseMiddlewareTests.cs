@@ -39,7 +39,7 @@ namespace TacticWar.Lib.Tests.Game.Pipeline.Middlewares.Phases
         
 
         // Utils
-        private ArmiesPlacementPhaseHandler NewArmiesPlacementPhaseMiddleware()
+        ArmiesPlacementPhaseHandler NewArmiesPlacementPhaseMiddleware()
         {
             var gameTable = ObjectsBuilder.NewGameTable();
             var currentTurnInfo = NewCurrentTurnInfo(gameTable);
@@ -48,13 +48,13 @@ namespace TacticWar.Lib.Tests.Game.Pipeline.Middlewares.Phases
             return middleware;
         }
 
-        private TurnInfo NewCurrentTurnInfo(GameTable gameTable)
+        TurnInfo NewCurrentTurnInfo(GameTable gameTable)
         {
             var player = gameTable.Players[0];
             return new TurnInfo { CurrentTurnPlayer = player, CurrentActionPlayer = player };
         }
 
-        private IDroppedTrisManager NewTrisManager()
+        IDroppedTrisManager NewTrisManager()
         {
             var trisManagerMock = new Mock<IDroppedTrisManager>();
             var droppedCards = new List<List<TerritoryCard>> { new List<TerritoryCard> { new TerritoryCard() } };

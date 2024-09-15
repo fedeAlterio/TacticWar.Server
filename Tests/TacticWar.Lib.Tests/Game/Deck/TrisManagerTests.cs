@@ -15,7 +15,7 @@ namespace TacticWar.Lib.Tests.Game.Deck
     public class TrisManagerTests
     {
         // Private fields
-        private int _id = 0;
+        int _id = 0;
 
 
 
@@ -76,14 +76,14 @@ namespace TacticWar.Lib.Tests.Game.Deck
 
 
         // Utils
-        private TerritoryCard NewCard(ArmyType armyType)
+        TerritoryCard NewCard(ArmyType armyType)
         {
             var territory = new Territory { Continent = Continent.Asia, Id = _id, Name = "A" + _id++ };
             var card = new TerritoryCard { ArmyType = armyType, Territory = territory};
             return card;
         }
 
-        private Func<int> PlayTris(IEnumerable<Territory> territories)
+        Func<int> PlayTris(IEnumerable<Territory> territories)
         {
             var player = NewPlayer(new List<Territory>());
             var trisManager = new TrisManager();
@@ -92,7 +92,7 @@ namespace TacticWar.Lib.Tests.Game.Deck
             return getArmies;
         }
 
-        private Func<int> PlayTris(IEnumerable<TerritoryCard> cards)
+        Func<int> PlayTris(IEnumerable<TerritoryCard> cards)
         {
             var player = NewPlayer(new List<Territory>());
             var trisManager = new TrisManager();
@@ -100,27 +100,27 @@ namespace TacticWar.Lib.Tests.Game.Deck
             return getArmies;
         }
 
-        private IEnumerable<TerritoryCard> CardsFromTerritories(IEnumerable<Territory> territories)
+        IEnumerable<TerritoryCard> CardsFromTerritories(IEnumerable<Territory> territories)
         {
             var id = 0;
             foreach (var territory in territories)
                 yield return new TerritoryCard { Id = id++, ArmyType = ArmyType.Artillery, Territory = territory };
         }
 
-        private IPlayer NewPlayer(IEnumerable<Territory> territories)
+        IPlayer NewPlayer(IEnumerable<Territory> territories)
         {
             var playerTerritories = BuildPlayerTerritoriesFrom(territories);
             return NewPlayer(playerTerritories);
         }
 
-        private IPlayer NewPlayer(IEnumerable<IPlayerTerritory> playerTerritories)
+        IPlayer NewPlayer(IEnumerable<IPlayerTerritory> playerTerritories)
         {
             var playerMock = new Mock<IPlayer>();
             playerMock.Setup(x => x.Territories).Returns(playerTerritories.ToList());
             return playerMock.Object;
         }
 
-        private IEnumerable<IPlayerTerritory> BuildPlayerTerritoriesFrom(IEnumerable<Territory> territories)
+        IEnumerable<IPlayerTerritory> BuildPlayerTerritoriesFrom(IEnumerable<Territory> territories)
         {
             foreach (var territory in territories)
             {

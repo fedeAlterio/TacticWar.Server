@@ -9,7 +9,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares.Abstractions
     public abstract class GamePipelineMiddleware : IGameApi, IGamePipelineMiddleware
     {
         // Private fields
-        private NextPipelineStepDelegate? _next;
+        NextPipelineStepDelegate? _next;
 
 
 

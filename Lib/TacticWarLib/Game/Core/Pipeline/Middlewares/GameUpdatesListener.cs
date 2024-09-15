@@ -12,10 +12,10 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Private fields
-        private readonly SemaphoreSlim _ss = new(1);
-        private readonly ITurnInfo _turnInfo;
-        private readonly INewTurnManager _turnManager;
-        private bool _pipelineRunning;        
+        readonly SemaphoreSlim _ss = new(1);
+        readonly ITurnInfo _turnInfo;
+        readonly INewTurnManager _turnManager;
+        bool _pipelineRunning;        
 
 
         // Initialization
@@ -58,7 +58,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
         // Utils
 
-        private void InvokeGameUpdated()
+        void InvokeGameUpdated()
         {
             if (_pipelineRunning)
                 return;

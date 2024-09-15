@@ -17,17 +17,17 @@ namespace TacticWar.Rest.ViewModels.Services
 
 
         // Private fields        
-        private readonly object _locker = new();
-        private readonly INewTurnManager _turnManager;
-        private readonly IGameTable _gameTable;
-        private readonly IGameTerminationController _gameTerminationController;
-        private readonly IGameUpdatesListener _gameUpdatesListener;
-        private readonly IIdleManager _idleManager;
-        private ArmiesPlacementInfoVM? _armiesPlacementInfo;
-        private AttackPhaseInfoVm? _attackPhaseInfo;
-        private PlacementAfterAttackInfoVM? _placementAfterAttackInfo;
-        private MovementPhaseInfoVM? _movementPhaseInfo;
-        private VictoryPhaseVM? _victoryPhaseInfo;
+        readonly object _locker = new();
+        readonly INewTurnManager _turnManager;
+        readonly IGameTable _gameTable;
+        readonly IGameTerminationController _gameTerminationController;
+        readonly IGameUpdatesListener _gameUpdatesListener;
+        readonly IIdleManager _idleManager;
+        ArmiesPlacementInfoVM? _armiesPlacementInfo;
+        AttackPhaseInfoVm? _attackPhaseInfo;
+        PlacementAfterAttackInfoVM? _placementAfterAttackInfo;
+        MovementPhaseInfoVM? _movementPhaseInfo;
+        VictoryPhaseVM? _victoryPhaseInfo;
 
 
 
@@ -44,7 +44,7 @@ namespace TacticWar.Rest.ViewModels.Services
             SetupEvents();
         }
 
-        private void SetupEvents()
+        void SetupEvents()
         {
             var turnManager = _turnManager;
             turnManager.ArmiesPlacementPhase += OnArmiesPlacementPhase;
@@ -55,7 +55,7 @@ namespace TacticWar.Rest.ViewModels.Services
             _gameTerminationController.Victory += OnVictory;
         }
 
-        private void OnGameUpdated(IPlayer player)
+        void OnGameUpdated(IPlayer player)
         {
             GameUpdated?.Invoke();
         }
@@ -64,17 +64,18 @@ namespace TacticWar.Rest.ViewModels.Services
 
 
         // Events
-        private void OnVictory(VictoryPhaseInfo info) => Update(() =>
+        void OnVictory(VictoryPhaseInfo info) => Update(() =>
         {
             _victoryPhaseInfo = new(info);
             GameUpdated?.Invoke();
         });
 
-        private void OnArmiesPlacementPhase(ArmiesPlacementInfo info) => Update(() => _armiesPlacementInfo = new(info));
-        private void OnAttackPhase(AttackPhaseInfo info) => Update(() => _attackPhaseInfo = new(info));
-        private void OnPlacementAfterAttack(AttackInfo info) => Update(() => _placementAfterAttackInfo = new(info));
-        private void OnFreeMove(FreeMovePhaseInfo info) => Update(() => _movementPhaseInfo = new());
-        private void Update(Action? action = null)
+        void OnArmiesPlacementPhase(ArmiesPlacementInfo info) => Update(() => _armiesPlacementInfo = new(info));
+        void OnAttackPhase(AttackPhaseInfo info) => Update(() => _attackPhaseInfo = new(info));
+        void OnPlacementAfterAttack(AttackInfo info) => Update(() => _placementAfterAttackInfo = new(info));
+        void OnFreeMove(FreeMovePhaseInfo info) => Update(() => _movementPhaseInfo = new());
+
+        void Update(Action? action = null)
         {
             Reset();
             action?.Invoke();
@@ -122,7 +123,7 @@ namespace TacticWar.Rest.ViewModels.Services
 
 
         // Utils
-        private void Reset()
+        void Reset()
         {
             _armiesPlacementInfo = default;
             _attackPhaseInfo = default;

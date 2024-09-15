@@ -12,9 +12,7 @@ namespace TacticWar.Lib.Game.Deck.Objectives.Decks
             return new Deck<IObjective>(objectives);
         }
 
-
-
-        private class AlwaysWinObjective : IObjective
+        class AlwaysWinObjective : IObjective
         {
             public string Description => "Easy Win";
 

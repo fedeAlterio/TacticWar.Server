@@ -9,11 +9,11 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
     public class GameStatistics : GamePipelineMiddleware, IGameStatistics
     {
         // Private fields
-        private readonly Dictionary<IPlayer, IPlayer> _kills = new();
-        private readonly IGameTable _gameTable;
-        private readonly ITurnInfo _turnInfo;
-        private HashSet<IPlayer> _alivePlayers = new();
-        private HashSet<IPlayer> _deadPlayers = new();
+        readonly Dictionary<IPlayer, IPlayer> _kills = new();
+        readonly IGameTable _gameTable;
+        readonly ITurnInfo _turnInfo;
+        HashSet<IPlayer> _alivePlayers = new();
+        HashSet<IPlayer> _deadPlayers = new();
 
 
 
@@ -51,17 +51,17 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Utils
-        private void UpdateKillsAndDeaths()
+        void UpdateKillsAndDeaths()
         {
             var oldDeads = _deadPlayers;
             UpdateDeaths();
-            var newDeads = _deadPlayers?.Except(oldDeads ?? Enumerable.Empty<IPlayer>()) ?? Enumerable.Empty<IPlayer>();
+            var newDeads = _deadPlayers?.Except(oldDeads) ?? Enumerable.Empty<IPlayer>();
 
             foreach (var dead in newDeads)
                 _kills[dead] = _turnInfo.CurrentActionPlayer!;
         }
 
-        private void UpdateDeaths()
+        void UpdateDeaths()
         {
             var deads = _gameTable.Players.Where(x => x.Territories.Count == 0);
             _deadPlayers = deads.ToHashSet();

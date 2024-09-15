@@ -2,7 +2,7 @@
 {
     public static class EnumerableExtensions
     {
-        private static Random _random = new();
+        static Random _random = new();
         public static IEnumerable<T> Cyclic<T>(this IEnumerable<T> @this)
         {
             while (true)

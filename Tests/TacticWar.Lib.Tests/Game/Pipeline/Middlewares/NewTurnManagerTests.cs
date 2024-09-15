@@ -22,8 +22,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 {
     public class NewTurnManagerTests
     {
-
-        private readonly ITestOutputHelper _output;
+        readonly ITestOutputHelper _output;
 
         public NewTurnManagerTests(ITestOutputHelper output)
         {
@@ -524,7 +523,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 
         // Utils
 
-        private TurnManager BuildTurnManager(out GameTable gameTable, IDiceRoller? diceRoller = null, IDeck<IObjective>? objectivesDeck = null)
+        TurnManager BuildTurnManager(out GameTable gameTable, IDiceRoller? diceRoller = null, IDeck<IObjective>? objectivesDeck = null)
         {
             gameTable = ObjectsBuilder.NewGameTable(diceRoller, objectivesDeck);
             var trisManager = ObjectsBuilder.NewTrisManager(gameTable);
@@ -536,6 +535,6 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
             return turnManager;
         }
 
-        private TurnManager BuildTurnManager(IDiceRoller? diceRoller = null) => BuildTurnManager(out _, diceRoller);
+        TurnManager BuildTurnManager(IDiceRoller? diceRoller = null) => BuildTurnManager(out _, diceRoller);
     }
 }

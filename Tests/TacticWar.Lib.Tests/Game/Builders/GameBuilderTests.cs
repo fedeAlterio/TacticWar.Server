@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using TacticWar.Lib.Game.Builders;
 using TacticWar.Lib.Tests.Attributes;
 using TacticWar.Lib.Tests.Game.Pipeline.TestsUtils;
@@ -11,9 +12,10 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Builders
         [FactFor(nameof(GameBuilder))]
         public async Task Should_CorrectlyBuildAGame()
         {
-            var gameBuilder = new GameBuilder();
+            
+            var gameBuilder = new GameBuilder(new ServiceCollection().BuildServiceProvider());
             var playersInfoCollection = ObjectsBuilder.NewPlayersInfoCollection();
-            var gameManager = await gameBuilder.NewGame(playersInfoCollection).StartGame();
+            var gameManager = await gameBuilder.NewGame(new(playersInfoCollection, 1)).StartGame();
             gameManager.Should().NotBeNull();
             gameManager.TurnManager.Should().NotBeNull();
             gameManager.GameTable.Should().NotBeNull();

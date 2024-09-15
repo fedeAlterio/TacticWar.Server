@@ -187,12 +187,12 @@ namespace TacticWar.Lib.Tests.Game.Players
 
 
         // Utils
-        private IDeck<TerritoryCard> NewTerritoryDeck()
+        IDeck<TerritoryCard> NewTerritoryDeck()
         {
             return new TerritoryDeckBuilder().NewDeck(new MapBuilder().BuildNew());
         }
 
-        private Territory NewTerritory()
+        Territory NewTerritory()
         {
             var territory = new Territory
             {
@@ -203,7 +203,7 @@ namespace TacticWar.Lib.Tests.Game.Players
             return territory;
         }
 
-        private Player NewPlayer()
+        Player NewPlayer()
         {
             var objectiveMock = new Mock<IObjective>();
 

@@ -6,7 +6,7 @@ namespace TacticWar.Lib.Game.Bot
     public class BotCreator : IBotCreator
     {
         // Private fields
-        private readonly IServiceProvider _provider;
+        readonly IServiceProvider _provider;
 
 
 

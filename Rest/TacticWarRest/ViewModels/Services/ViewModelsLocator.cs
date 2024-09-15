@@ -5,7 +5,7 @@ namespace TacticWar.Rest.ViewModels.Services
     public class ViewModelsLocator : IViewModelsLocator
     {
         // Private fields
-        private readonly Dictionary<IGameManager, IViewModelService> _viewModelsByGameManagers = new();
+        readonly Dictionary<IGameManager, IViewModelService> _viewModelsByGameManagers = new();
 
 
 

@@ -15,11 +15,11 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Private fields
-        private readonly Dictionary<IPlayer, Timer> _timersByPlayer = new();
-        private readonly HashSet<IPlayer> _idlePlayers = new();
-        private readonly IBotManager _botManager;
-        private readonly ITurnInfo _turnInfo;
-        private readonly IGameTable _gameTable;
+        readonly Dictionary<IPlayer, Timer> _timersByPlayer = new();
+        readonly HashSet<IPlayer> _idlePlayers = new();
+        readonly IBotManager _botManager;
+        readonly ITurnInfo _turnInfo;
+        readonly IGameTable _gameTable;
 
 
 
@@ -32,9 +32,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             _gameTable = gameTable;
         }
 
-
-
-        private Timer BuildTimer(IPlayer player)
+        Timer BuildTimer(IPlayer player)
         {
             var timer = new Timer(IdleTimeoutPeriodMs);
             timer.Elapsed += (_, _) => OnPlayerIdle(player);
@@ -71,15 +69,14 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Events handlers
-        private Task OnGameStateChanged()
+        Task OnGameStateChanged()
         {
             var currentPlayer = _turnInfo.CurrentActionPlayer;
             OnPlayerAction(currentPlayer!);
             return Task.CompletedTask;
         }
 
-
-        private void OnPlayerAction(IPlayer actionPlayer)
+        void OnPlayerAction(IPlayer actionPlayer)
         {
             if (!_botManager.IsBotPlaying)
             {
@@ -96,7 +93,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
                 }
         }
 
-        private void OnPlayerIdle(IPlayer player)
+        void OnPlayerIdle(IPlayer player)
         {
             if (_turnInfo.CurrentActionPlayer != player)
                 return;

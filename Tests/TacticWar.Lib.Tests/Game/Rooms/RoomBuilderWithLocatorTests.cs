@@ -25,7 +25,7 @@ namespace TacticWar.Lib.Tests.Game.Rooms
 
 
         // Utils
-        private Room NewRoom()
+        Room NewRoom()
         {
             var gameBuilderMock = new Mock<IGameBuilder>();
             var configuration = new RoomConfiguration();

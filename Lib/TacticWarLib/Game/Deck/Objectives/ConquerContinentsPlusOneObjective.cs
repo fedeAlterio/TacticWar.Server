@@ -8,8 +8,8 @@ namespace TacticWar.Lib.Game.Deck.Objectives
     public class ConquerContinentsPlusOneObjective : IObjective
     {
         // Private fields
-        private readonly GameMap _gameMap;
-        private readonly IReadOnlyList<Continent> _continents;
+        readonly GameMap _gameMap;
+        readonly IReadOnlyList<Continent> _continents;
 
 
 

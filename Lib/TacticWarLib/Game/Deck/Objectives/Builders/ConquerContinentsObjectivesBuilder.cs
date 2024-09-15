@@ -7,7 +7,7 @@ namespace TacticWar.Lib.Game.Deck.Objectives.Builders
     public class ConquerContinentsObjectivesBuilder : IObjectivesBuilder
     {
         // Private fields
-        private readonly GameMap _gameMap;
+        readonly GameMap _gameMap;
 
 
 
@@ -33,7 +33,7 @@ namespace TacticWar.Lib.Game.Deck.Objectives.Builders
 
 
         // Utils
-        private ConquerContinentsObjective Conquer(params Continent[] continents) => new(continents, _gameMap);
-        private ConquerContinentsPlusOneObjective ConquerPlusOne(params Continent[] continents) => new(continents, _gameMap);
+        ConquerContinentsObjective Conquer(params Continent[] continents) => new(continents, _gameMap);
+        ConquerContinentsPlusOneObjective ConquerPlusOne(params Continent[] continents) => new(continents, _gameMap);
     }
 }

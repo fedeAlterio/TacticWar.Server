@@ -10,7 +10,7 @@ namespace TacticWar.Rest.RequestsHandlers.Game
     {
         // Fields
         protected readonly IRoomsManager _roomsManager;
-        private readonly IViewModelsLocator _viewModelsLocator;
+        readonly IViewModelsLocator _viewModelsLocator;
 
 
         // Initialization

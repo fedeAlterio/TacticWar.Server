@@ -23,6 +23,6 @@ namespace TacticWar.Rest.RequestsHandlers.Game
 
 
         // Utils
-        private Territory TerritoryById(int id) => GameManager.GameTable.Map.TerritoryById(id);
+        Territory TerritoryById(int id) => GameManager.GameTable.Map.TerritoryById(id);
     }
 }

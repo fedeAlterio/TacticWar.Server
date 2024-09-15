@@ -17,9 +17,9 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Private fields
-        private readonly GameTable _gameTable;
-        private readonly TurnInfo _currentTurnInfo;
-        private readonly IDroppedTrisManager _trisManager;
+        readonly GameTable _gameTable;
+        readonly TurnInfo _currentTurnInfo;
+        readonly IDroppedTrisManager _trisManager;
 
 
 
@@ -80,13 +80,13 @@ namespace TacticWar.Lib.Game.Core.GamePhaseHandlers
 
 
         // Utils
-        private void SkipPlacement()
+        void SkipPlacement()
         {
             ArmiesToPlace = 0;
             ArmiesPlacementPhaseEnded?.Invoke();
         }
 
-        private void InvokeArmiesPlacementPhase()
+        void InvokeArmiesPlacementPhase()
         {
             var info = new ArmiesPlacementInfo { ArmiesToPlace = ArmiesToPlace, DroppedCards = _trisManager.DroppedCards };
             ArmiesPlacementPhase?.Invoke(info);

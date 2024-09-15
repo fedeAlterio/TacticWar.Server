@@ -48,7 +48,7 @@ namespace TacticWar.Lib.Tests.Game.Deck
 
 
         // Utils
-        private List<TerritoryCard> BuildAllCards()
+        List<TerritoryCard> BuildAllCards()
         {
             var deckBuilder = new TerritoryDeckBuilder();
             var deck = deckBuilder.NewDeck(NewGameMap());
@@ -60,7 +60,7 @@ namespace TacticWar.Lib.Tests.Game.Deck
             return cards;
         }
 
-        private GameMap NewGameMap()
+        GameMap NewGameMap()
         {
             return new MapBuilder().BuildNew();
         }

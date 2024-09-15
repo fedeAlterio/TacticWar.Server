@@ -81,7 +81,7 @@ namespace TacticWar.Lib.Tests.Game.Table
 
 
         // Utils
-        private GameTable NewGameTable()
+        GameTable NewGameTable()
         {
             var gameMap = new MapBuilder().BuildNew();
             var playersInfoCollection = NewPlayersInfoCollection();
@@ -91,7 +91,7 @@ namespace TacticWar.Lib.Tests.Game.Table
             return gameTable;
         }
 
-        private PlayersInfoCollection NewPlayersInfoCollection()
+        PlayersInfoCollection NewPlayersInfoCollection()
         {
             var playersInfo = new PlayerInfo[]
             {
@@ -104,7 +104,7 @@ namespace TacticWar.Lib.Tests.Game.Table
             return playersInfoCollection;
         }
 
-        private IDeck<IObjective> NewObjectiveDeck()
+        IDeck<IObjective> NewObjectiveDeck()
         {
             var objectiveDeckMock = new Mock<IDeck<IObjective>>();
             var objectiveMock = new Mock<IObjective>();
@@ -113,12 +113,12 @@ namespace TacticWar.Lib.Tests.Game.Table
             return objectiveDeckMock.Object;
         }
 
-        private IDeck<TerritoryCard> NewTerritoryCardsDeck(GameMap gameMap)
+        IDeck<TerritoryCard> NewTerritoryCardsDeck(GameMap gameMap)
         {
             var builder = new TerritoryDeckBuilder();
             return builder.NewDeck(gameMap);
         }
 
-        private IDiceRoller NewDIceRoller() => ObjectsBuilder.NewDiceRoller();
+        IDiceRoller NewDIceRoller() => ObjectsBuilder.NewDiceRoller();
     }
 }

@@ -13,7 +13,7 @@ namespace TacticWar.Lib.Game.Core
 
 
         // Private fields
-        private readonly GameTable _gameTable;
+        readonly GameTable _gameTable;
 
 
 
@@ -53,7 +53,7 @@ namespace TacticWar.Lib.Game.Core
 
 
         // Utils
-        private void InvokeTrisDropped(int armiesCount)
+        void InvokeTrisDropped(int armiesCount)
         {
             TrisDropped?.Invoke(armiesCount);
         }

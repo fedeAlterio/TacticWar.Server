@@ -67,14 +67,14 @@ namespace TacticWar.Lib.Tests.Game.Rooms
 
 
         // Utils
-        private RoomsManager NewRoomsManager()
+        RoomsManager NewRoomsManager()
         {
             var roomBuilderMock = new Mock<IRoomBuilder>();
             roomBuilderMock.Setup(r => r.NewRoom()).Returns(NewRoom);
             return new RoomsManager(roomBuilderMock.Object);
         }
 
-        private Room NewRoom()
+        Room NewRoom()
         {
             var gameBuilder = NewGameBuilder();
             var configuration = new RoomConfiguration { KeepAliveInterval = 100_000 }; // Infinite timer delay
@@ -82,7 +82,7 @@ namespace TacticWar.Lib.Tests.Game.Rooms
             return room;
         }
 
-        private IGameBuilder NewGameBuilder()
+        IGameBuilder NewGameBuilder()
         {
             var builderMock = new Mock<IGameBuilder>();
             return builderMock.Object;

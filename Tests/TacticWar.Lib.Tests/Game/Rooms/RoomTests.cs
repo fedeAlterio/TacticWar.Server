@@ -16,7 +16,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
     public class RoomTests
     {
         [FactFor]
-        private void Should_GenerateNewUniqueIdEveryTime()
+        void Should_GenerateNewUniqueIdEveryTime()
         {
             var ids = Enumerable.Range(1, 1000).Select(x => NewRoom().Id).ToList();
             ids.Count.Should().Be(ids.Distinct().Count());
@@ -24,7 +24,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor]
-        private void Should_CorrectlyInitializeARoom()
+        void Should_CorrectlyInitializeARoom()
         {
             var room = NewRoom();
             room.GameStarted.Should().BeFalse();
@@ -35,7 +35,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor(nameof(Room.AddPlayer))]
-        private void Should_CorrectlyAddPlayerToPlayersList()
+        void Should_CorrectlyAddPlayerToPlayersList()
         {
             var info = new[]
              {
@@ -62,7 +62,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor(nameof(Room.AddPlayer))]
-        private void Should_ThrowOnSamePlayerName()
+        void Should_ThrowOnSamePlayerName()
         {
             var room = NewRoom();
             var info = new { Name = "A", SecretCode = 0, IsBot = false };
@@ -73,7 +73,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor(nameof(Room.AddPlayer))]
-        private void Should_ThrowIfTooManyPlayersAreAdded()
+        void Should_ThrowIfTooManyPlayersAreAdded()
         {
             var room = NewRoom();
             var info = new[]
@@ -98,7 +98,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor(nameof(Room.RemovePlayer))]
-        private void Should_RemovePlayerFromPlayersList()
+        void Should_RemovePlayerFromPlayersList()
         {
             var room = NewRoom();
             var player = room.AddPlayer("A", 1, true);
@@ -109,7 +109,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor(nameof(Room.RemovePlayer))]
-        private void Should_ThrowIfRemovingNotExistentPlayer()
+        void Should_ThrowIfRemovingNotExistentPlayer()
         {
             var room = NewRoom();
             var notExistentColor = PlayerColor.Red;
@@ -122,7 +122,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor(nameof(Room.AddPlayer))]
-        private async Task Should_StartIdleTimerForJoinedPlayer()
+        async Task Should_StartIdleTimerForJoinedPlayer()
         {
             var configuration = new RoomConfiguration { KeepAliveInterval = 500 };
             Room room = NewRoom(configuration);
@@ -134,7 +134,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         [FactFor(nameof(Room.KeepAlive))]
-        private async Task Should_KeepAlivePlayer()
+        async Task Should_KeepAlivePlayer()
         {
             var configuration = new RoomConfiguration { KeepAliveInterval = 500 };
             Room room = NewRoom(configuration);
@@ -154,7 +154,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
 
 
         // utils
-        private Room NewRoom(RoomConfiguration? configuration = null)
+        Room NewRoom(RoomConfiguration? configuration = null)
         {
             var gameBuilder = NewGameBuilder();
             configuration ??= new RoomConfiguration { KeepAliveInterval = 100_000 }; // Infinite timer delay
@@ -164,7 +164,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Rooms
             return room;
         }
 
-        private IGameBuilder NewGameBuilder()
+        IGameBuilder NewGameBuilder()
         {
             var builderMock = new Mock<IGameBuilder>();
             return builderMock.Object;

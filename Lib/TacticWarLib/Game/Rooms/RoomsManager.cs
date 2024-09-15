@@ -7,9 +7,9 @@ namespace TacticWar.Lib.Game.Rooms
     public class RoomsManager : IRoomsManager
     {
         // Private fields
-        private static readonly object _locker = new();
-        private readonly IRoomBuilder _roomBuilder;
-        private List<IRoom> _rooms = new();
+        static readonly object _locker = new();
+        readonly IRoomBuilder _roomBuilder;
+        List<IRoom> _rooms = new();
 
 
 
@@ -27,7 +27,7 @@ namespace TacticWar.Lib.Game.Rooms
 
 
         // Events
-        private async void OnRoomDeath(IRoom room)
+        async void OnRoomDeath(IRoom room)
         {
             await Task.Delay(3000);
             using var _ = _locker.Lock();
@@ -68,7 +68,7 @@ namespace TacticWar.Lib.Game.Rooms
 
 
         // Utils
-        private IRoom? FirstOrDefault(Func<IRoom, bool> func)
+        IRoom? FirstOrDefault(Func<IRoom, bool> func)
         {
             using var _ = _locker.Lock();
             return _rooms.FirstOrDefault(func);

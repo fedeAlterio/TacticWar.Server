@@ -9,6 +9,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
+using System.Text.Json.Serialization.Metadata;
+using TacticWar.Rest.Installers;
 
 namespace TacticWar.Rest
 {
@@ -31,8 +33,9 @@ namespace TacticWar.Rest
             services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
             //services.AddInMemoryRateLimiting();
             //services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-            services.AddMediatR(typeof(Startup));
-            services.AddScoped<ServiceFactory>(p => p.GetService);
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
+
 
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
@@ -42,6 +45,7 @@ namespace TacticWar.Rest
             }));
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RisikoRest", Version = "v1" });
@@ -58,10 +62,7 @@ namespace TacticWar.Rest
                 options.Level = CompressionLevel.SmallestSize;
             });
 
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist";
-            //});
+            services.AddAppOpenTelemetry(Configuration);
 
             AddServices(services);
         }
@@ -104,7 +105,7 @@ namespace TacticWar.Rest
             //AddSpaConfiguration(app, env, provider);
         }
 
-        private static void AddSpaConfiguration(IApplicationBuilder app, IWebHostEnvironment env, FileExtensionContentTypeProvider provider)
+        static void AddSpaConfiguration(IApplicationBuilder app, IWebHostEnvironment env, FileExtensionContentTypeProvider provider)
         {
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -144,7 +145,7 @@ namespace TacticWar.Rest
 
 
         // Utils
-        private void AddServices(IServiceCollection services)
+        void AddServices(IServiceCollection services)
         {
             services.AddTacticWar();
             services.AddSingleton<IViewModelsLocator, ViewModelsLocator>();

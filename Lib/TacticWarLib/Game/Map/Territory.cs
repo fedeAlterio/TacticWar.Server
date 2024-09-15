@@ -3,7 +3,7 @@
     public class Territory
     {
         // Private fields
-        private List<Territory> _neighbors;
+        List<Territory> _neighbors;
         
         
         

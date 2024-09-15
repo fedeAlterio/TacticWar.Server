@@ -45,7 +45,7 @@ namespace TacticWar.Lib.Game.GamePhases.PhaseInfo
 
 
         // Utils
-        private static bool HasAllContinentTerritories(IEnumerable<Territory> continentTerritories, Player player)
+        static bool HasAllContinentTerritories(IEnumerable<Territory> continentTerritories, Player player)
         {
             foreach (var territory in continentTerritories)
                 if (!player.Territories.ContainsKey(territory))

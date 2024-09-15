@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using TacticWar.Lib.Game.Abstractions;
 using TacticWar.Lib.Game.Bot;
 using TacticWar.Lib.Game.Bot.Abstractions;
@@ -21,30 +22,37 @@ namespace TacticWar.Lib.Game.Builders
 {
     public class GameBuilder : IGameBuilder
     {
-        public IGameConfigurator NewGame(PlayersInfoCollection playersInfo)
+        readonly IServiceProvider _serviceProvider;
+
+        public GameBuilder(IServiceProvider serviceProvider)
         {
-            return new GameConfigurator(playersInfo);
+            _serviceProvider = serviceProvider;
         }
 
-        private class GameConfigurator : IGameConfigurator
+        public IGameConfigurator NewGame(GameStartupInformation gameStartupInformation)
+        {
+            return new GameConfigurator(gameStartupInformation, _serviceProvider);
+        }
+
+        class GameConfigurator : IGameConfigurator
         {
             // Private fields
-            private readonly Dictionary<Type, Action<IGameManager, object>> _gameObserversTypes = new();
-            private readonly PlayersInfoCollection _playersInfoCollection;
-            private readonly IServiceCollection _services;
-            private IServiceProvider? _serviceProvider;
+            readonly Dictionary<Type, Action<IGameManager, object>> _gameObserversTypes = new();
+            readonly PlayersInfoCollection _playersInfoCollection;
+            readonly IServiceCollection _services;
+            IServiceProvider? _serviceProvider;
 
 
 
             // IGameBuilder
-            public GameConfigurator(PlayersInfoCollection playersInfo)
+            public GameConfigurator(GameStartupInformation gameMetadata, IServiceProvider serviceProvider)
             {
-                _playersInfoCollection = playersInfo;
-                _services = CreateServiceCollection();
+                _playersInfoCollection = gameMetadata.PlayersInfo;
+                _services = CreateServiceCollection(serviceProvider, gameMetadata);
                 AddBot();
             }
 
-            private void AddBot()
+            void AddBot()
             {
                 _services.AddSingleton<IBotCreator, BotCreator>();
                 AddSingleton<IBotManager, BotManager>();
@@ -77,9 +85,12 @@ namespace TacticWar.Lib.Game.Builders
 
 
             // Services Registration
-            private IServiceCollection CreateServiceCollection()
+            IServiceCollection CreateServiceCollection(IServiceProvider originalServiceProvider, GameStartupInformation gameStartupInformation)
             {
                 var services = new ServiceCollection();
+                services.AddSingleton(gameStartupInformation);
+                services.AddTransient(_ => originalServiceProvider.GetRequiredService<ILoggerFactory>());
+                services.AddTransient(typeof(ILogger<>), typeof(ProxyLogger<>));
                 InjectGameDependencies(services);
                 RegisterObservers(services);
                 RegisterPipelineDependencies(services);
@@ -87,8 +98,8 @@ namespace TacticWar.Lib.Game.Builders
                 InjectGameManager(services);
                 return services;
             }
-      
-            private void InjectGameDependencies(IServiceCollection services)
+
+            void InjectGameDependencies(IServiceCollection services)
             {
                 var gameMap = new MapBuilder().BuildNew();
                 services.AddSingleton(gameMap);
@@ -97,24 +108,25 @@ namespace TacticWar.Lib.Game.Builders
                 services.AddSingleton(provider => new ObjectivesDeckBuilder(provider).NewDeck());               
                 services.AddSingleton<IDiceRoller, DiceRoller>();
                 services.AddSingleton<IGameConfiguration, GameConfiguration>();
+            
                 AddBoth<IDroppedTrisManager, CardsManager>(services);
                 AddBoth<IGameTable, GameTable>(services);
                 AddBoth<ITurnInfo, TurnInfo>(services);
             }
 
-            private void InjectGameApi(IServiceCollection services)
+            void InjectGameApi(IServiceCollection services)
             {
                 services.AddSingleton<GameApiBuilder>();
                 services.AddSingleton<IGameApi>(provider => provider.GetService<GameApiBuilder>()!.BuildGameApi());
             }
 
-            private void RegisterObservers(IServiceCollection services)
+            void RegisterObservers(IServiceCollection services)
             {
                 foreach (var (type, _) in _gameObserversTypes)
                     services.AddSingleton(type);
             }
 
-            private void RegisterPipelineDependencies(IServiceCollection services)
+            void RegisterPipelineDependencies(IServiceCollection services)
             {
                 AddBoth<INewTurnManager, TurnManager>(services);
                 AddBoth<IGameUpdatesListener, GameUpdatesListener>(services);
@@ -124,18 +136,17 @@ namespace TacticWar.Lib.Game.Builders
                 AddBoth<IPipelineDelimiter, PipelineDelimiter>(services);
                 services.AddSingleton<ShortCircuitIfGameEnded>();
                 services.AddSingleton<GameValidation>();
-
+                services.AddSingleton<GameLogging>();
             }
 
-            private void InjectGameManager(ServiceCollection services)
+            void InjectGameManager(ServiceCollection services)
             {
                 services.AddSingleton<IGameManager, NewGameManager>();
             }
 
 
-
             // Utils
-            private void NotifyObservers(IGameManager gameManager)
+            void NotifyObservers(IGameManager gameManager)
             {
                 foreach (var (type, onCreated) in _gameObserversTypes)
                 {
@@ -144,11 +155,19 @@ namespace TacticWar.Lib.Game.Builders
                 }
             }
 
-            private void AddBoth<T, V>(IServiceCollection services) where V : class, T where T : class
+            void AddBoth<T, V>(IServiceCollection services) where V : class, T where T : class
             {
                 services.AddSingleton<V>();
                 services.AddSingleton<T>(provider => provider.GetService<V>()!);
             }
+        }
+
+        class ProxyLogger<T>(ILoggerFactory loggerFactory) : ILogger<T>
+        {
+            readonly ILogger<T> _realLogger = loggerFactory.CreateLogger<T>();
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter) => _realLogger.Log(logLevel, eventId, state, exception, formatter);
+            public bool IsEnabled(LogLevel logLevel) => _realLogger.IsEnabled(logLevel);
+            public IDisposable? BeginScope<TState>(TState state) where TState : notnull => _realLogger.BeginScope(state);
         }
     }
 }

@@ -6,8 +6,8 @@ namespace TacticWar.Lib.Game.Deck.Objectives
     public class ConquerTerritoriesWithArmiesObjective : IObjective
     {
         // Private fields
-        private readonly int _territoriesToConquer;
-        private readonly int _armiesForTerritory;
+        readonly int _territoriesToConquer;
+        readonly int _armiesForTerritory;
 
 
 

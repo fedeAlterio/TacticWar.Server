@@ -6,11 +6,13 @@ namespace TacticWar.Rest.Middlewares
 {
     public class ErrorHandlingMiddleware
     {
-        private readonly RequestDelegate next;
+        readonly RequestDelegate next;
+        readonly ILogger<ErrorHandlingMiddleware> _logger;
 
-        public ErrorHandlingMiddleware(RequestDelegate next)
+        public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             this.next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -21,19 +23,17 @@ namespace TacticWar.Rest.Middlewares
             }
             catch (GameException ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                _logger.LogError(ex, "Game exception");
                 await WriteErrorResult(context, HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message + "\n" + e.StackTrace);
+                _logger.LogError(e, "Error handling request");
                 await WriteErrorResult(context, HttpStatusCode.InternalServerError, e.Message);
             }
         }
 
-
-        private static Task WriteErrorResult(HttpContext context, HttpStatusCode code, string message)
+        static Task WriteErrorResult(HttpContext context, HttpStatusCode code, string message)
         {
             string result = JsonConvert.SerializeObject(new { error = message });
 

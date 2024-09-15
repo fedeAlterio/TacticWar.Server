@@ -3,8 +3,8 @@
     public class UpdateQueue<T>
     {
         // Private fields
-        private readonly object _locker = new();
-        private readonly IList<TaskCompletionWrapper<T>> _taskSource = new List<TaskCompletionWrapper<T>> { new TaskCompletionWrapper<T>() };
+        readonly object _locker = new();
+        readonly IList<TaskCompletionWrapper<T>> _taskSource = new List<TaskCompletionWrapper<T>> { new TaskCompletionWrapper<T>() };
 
 
 
@@ -46,7 +46,7 @@
 
 
         // Utils
-        private void CheckTaskCompleted()
+        void CheckTaskCompleted()
         {
             var taskWrapper = _taskSource[0];
             if (taskWrapper.Notified && taskWrapper.Used)

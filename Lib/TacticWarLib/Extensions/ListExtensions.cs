@@ -2,7 +2,7 @@
 {
     public static class IListExtensions 
     {
-        private static Random _random = new();
+        static Random _random = new();
         public static void Shuffle<T>(this IList<T> @this)
         {
             int n = @this.Count;

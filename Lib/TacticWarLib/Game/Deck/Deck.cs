@@ -7,7 +7,7 @@ namespace TacticWar.Lib.Game.Deck
     public class Deck<T> : IDeck<T>
     {
         // Private fields
-        private readonly List<T> _cards = new();
+        readonly List<T> _cards = new();
 
 
 
