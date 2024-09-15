@@ -1,4 +1,5 @@
-﻿using TacticWar.Lib.Game.Core.Abstractions;
+﻿using System.Reactive.Linq;
+using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.GamePhases.PhaseInfo;
 using TacticWar.Lib.Game.Players.Abstractions;
 using TacticWar.Lib.Game.Table.Abstractions;
@@ -24,6 +25,9 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
         {
             _gameTable = gameTable;
             _idleManager = idleManager;
+            idleManager.GameEnded
+                       .Take(1)
+                       .Subscribe(_ => InvokeGameTerminated());
         }
 
 

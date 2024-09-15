@@ -64,8 +64,7 @@ namespace TacticWar.Lib.Game.Core
         {
             var bot = _botCreator.NewNoActionBot();
             configuration?.Invoke(bot);
-            if (!_botsByPlayer.ContainsKey(color))
-                _botsByPlayer.Add(color, bot);
+            _botsByPlayer.TryAdd(color, bot);
             Task.Run(PlayIfShould);
         }
 
@@ -79,12 +78,6 @@ namespace TacticWar.Lib.Game.Core
             }
             this.OnTurnEnded += OnTurnEnded;
             AddBot(color);
-        }
-
-        public async Task SkipTurn()
-        {
-            var bot = _botCreator.NewNoActionBot();
-            await bot.PlayTurn();
         }
 
 

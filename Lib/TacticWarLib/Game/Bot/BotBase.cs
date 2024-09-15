@@ -70,7 +70,7 @@ namespace TacticWar.Lib.Game.Bot
             var currentPlayer = _turnInfo.CurrentActionPlayer;
             do
                 await TryPlayOneStep();
-            while (_turnInfo.CurrentActionPlayer == currentPlayer || _gameTerminationController.IsGameEnded);
+            while (_turnInfo.CurrentActionPlayer == currentPlayer && !_gameTerminationController.IsGameEnded);
         }
 
 

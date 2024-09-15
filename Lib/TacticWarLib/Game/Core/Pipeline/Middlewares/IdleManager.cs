@@ -1,4 +1,8 @@
-﻿using TacticWar.Lib.Game.Core.Abstractions;
+﻿using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using TacticWar.Lib.Game.Abstractions;
+using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.Players.Abstractions;
 using TacticWar.Lib.Game.Table.Abstractions;
 using Timer = System.Timers.Timer;
@@ -8,37 +12,27 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 {
     public class IdleManager : SingleTaskMiddleware, IIdleManager
     {
-        // Events
-        public event Action<IPlayer>? PlayerIdle;
-        public event Action? IdleGame;
-
-
-
+        readonly Subject<IPlayer?> _playerDidSomething = new();
+        readonly BehaviorSubject<bool> _isGameEnded = new(false);
+        readonly Subject<Unit> _gameEnded = new();
         // Private fields
-        readonly Dictionary<IPlayer, Timer> _timersByPlayer = new();
         readonly HashSet<IPlayer> _idlePlayers = new();
         readonly IBotManager _botManager;
         readonly ITurnInfo _turnInfo;
         readonly IGameTable _gameTable;
 
+        public IObservable<Unit> GameEnded => _gameEnded;
+
 
 
         // Initialization
-        public IdleManager(IBotManager botManager, ITurnInfo turnInfo, IGameTable gameTable)
+        public IdleManager(IBotManager botManager,ITurnInfo turnInfo, IGameTable gameTable)
         {
-            IdleTimeoutPeriodMs = 180 * 1000;
+            IdleTimeoutPeriodMs = 20 * 1000;
             _botManager = botManager;
             _turnInfo = turnInfo;
             _gameTable = gameTable;
         }
-
-        Timer BuildTimer(IPlayer player)
-        {
-            var timer = new Timer(IdleTimeoutPeriodMs);
-            timer.Elapsed += (_, _) => OnPlayerIdle(player);
-            return timer;
-        }
-
 
 
         // Properties        
@@ -47,68 +41,61 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
         public int IdleTimeoutPeriodMs { get; }
 
 
-
-
         // Game middleware
         public override async Task Start()
         {
-            foreach (var player in _gameTable.Players)
-                _timersByPlayer.Add(player, BuildTimer(player));
-            OnPlayerAction(_turnInfo!.CurrentTurnPlayer!);
+            _playerDidSomething
+                .StartWith(_turnInfo.CurrentTurnPlayer)
+                .Do(player =>
+                {
+                    if (!_botManager.IsBotPlaying && player is not null)
+                    {
+                        _idlePlayers.Remove(player);
+                    }
+                })
+                .Select(player => player switch
+                {
+                    null => Observable.Empty<IPlayer>(),
+                    _ => Observable.Return(player)
+                                   .Delay(TimeSpan.FromMilliseconds(IdleTimeoutPeriodMs))
+                })
+                .Switch()
+                .Do(OnPlayerIdle)
+                .TakeUntil(_isGameEnded.Where(static isEnded => isEnded))
+                .Subscribe();
+
             await base.Start();
         }
 
         public override async Task TerminateGame()
         {
-            foreach (var (_, timer) in _timersByPlayer)
-                timer.Stop();
+            _isGameEnded.OnNext(true);
             await base.TerminateGame();
         }
 
 
-
-
-        // Events handlers
-        Task OnGameStateChanged()
-        {
-            var currentPlayer = _turnInfo.CurrentActionPlayer;
-            OnPlayerAction(currentPlayer!);
-            return Task.CompletedTask;
-        }
-
-        void OnPlayerAction(IPlayer actionPlayer)
-        {
-            if (!_botManager.IsBotPlaying)
-            {
-                _idlePlayers.Remove(actionPlayer);
-            }
-
-            foreach (var (player, timer) in _timersByPlayer)
-                if (_turnInfo.CurrentActionPlayer != player)
-                    timer.Stop();
-                else
-                {
-                    timer.Stop();
-                    timer.Start();
-                }
-        }
-
         void OnPlayerIdle(IPlayer player)
         {
+            _idlePlayers.Add(player);
+            if (IsGameIdle)
+            {
+                _gameEnded.OnNext(Unit.Default);
+                return;
+            }
+
             if (_turnInfo.CurrentActionPlayer != player)
                 return;
 
-            _idlePlayers.Add(player);
-            PlayerIdle?.Invoke(player);
             _botManager.AddBotForOneTurn(player.Color);
-            if (IsGameIdle)
-                IdleGame?.Invoke();
         }
 
         protected override async Task DoAction()
         {
             var next = Next;
-            await OnGameStateChanged();
+
+            var currentPlayer = _turnInfo.CurrentActionPlayer;
+            _playerDidSomething.OnNext(currentPlayer);
+
             await next!();
         }
     }
