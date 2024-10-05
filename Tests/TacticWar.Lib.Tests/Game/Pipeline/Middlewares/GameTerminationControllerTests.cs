@@ -2,6 +2,8 @@
 using Moq;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging.Testing;
+using TacticWar.Lib.Game;
 using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.Core.Pipeline.Middlewares;
 using TacticWar.Lib.Game.Deck;
@@ -29,12 +31,12 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
             idleManagerMock.Setup(x => x.IsGameIdle).Returns(false);
 
             var gameTable = ObjectsBuilder.NewGameTable(objectivesDeck: objectivesDeck);
-            var gameTerminationController = new GameTerminationController(gameTable,idleManagerMock.Object);
+            var gameTerminationController = new GameTerminationController(gameTable, idleManagerMock.Object, new GameStartupInformation(new([]), 1), new FakeLogger<GameTerminationController>());
 
             var tcs = new TaskCompletionSource<object?>();
             gameTerminationController.Victory += exceptionCatcher.Action<VictoryPhaseInfo>(async victoryInfo =>
             {
-                victoryInfo.Winner.Should().NotBeNull();                
+                victoryInfo.Winner.Should().NotBeNull();
                 tcs.SetResult(null);
             });
 

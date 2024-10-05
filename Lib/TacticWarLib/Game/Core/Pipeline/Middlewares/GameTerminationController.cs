@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Linq;
+using Microsoft.Extensions.Logging;
 using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.GamePhases.PhaseInfo;
 using TacticWar.Lib.Game.Players.Abstractions;
@@ -6,7 +7,7 @@ using TacticWar.Lib.Game.Table.Abstractions;
 
 namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 {
-    public class GameTerminationController : SingleTaskMiddleware, IGameTerminationController
+    public partial class GameTerminationController : SingleTaskMiddleware, IGameTerminationController
     {
         // Events
         public event Action<VictoryPhaseInfo>? Victory;
@@ -17,14 +18,18 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
         // Private fields-
         IGameTable _gameTable;
         readonly IIdleManager _idleManager;
-
-
+        readonly GameStartupInformation _gameStartupInformation;
+        readonly ILogger<GameTerminationController> _logger;
 
         // Initialization
-        public GameTerminationController(IGameTable gameTable, IIdleManager idleManager)
+        public GameTerminationController(IGameTable gameTable, IIdleManager idleManager, 
+                                         GameStartupInformation gameStartupInformation,
+                                         ILogger<GameTerminationController> logger)
         {
             _gameTable = gameTable;
             _idleManager = idleManager;
+            _gameStartupInformation = gameStartupInformation;
+            _logger = logger;
             idleManager.GameEnded
                        .Take(1)
                        .Subscribe(_ => InvokeGameTerminated());
@@ -66,9 +71,11 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             if (IsGameEnded)
                 return;
 
+            LogTerminatingGame(_logger, _gameStartupInformation.RoomId);
             IsGameEnded = true;
             await Task.Delay(3000);
             GameEnded?.Invoke();
+            LogGameTerminated(_logger, _gameStartupInformation.RoomId);
         }
 
         async void InvokeVictory(IPlayer winner, bool shouldWait)
@@ -100,5 +107,12 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             shouldWait = !_idleManager.IsGameIdle;
             return winner != null;
         }
+
+        [LoggerMessage(LogLevel.Information, "Terminating game.  Room Id {roomId}")]
+        static partial void LogTerminatingGame(ILogger logger, int roomId);
+
+
+        [LoggerMessage(LogLevel.Information, "Game terminated.  Room Id {roomId}")]
+        static partial void LogGameTerminated(ILogger logger, int roomId);
     }
 }

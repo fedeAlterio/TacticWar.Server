@@ -12,8 +12,9 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Builders
         [FactFor(nameof(GameBuilder))]
         public async Task Should_CorrectlyBuildAGame()
         {
-            
-            var gameBuilder = new GameBuilder(new ServiceCollection().BuildServiceProvider());
+            var services =new ServiceCollection();
+            services.AddFakeLogging();
+            var gameBuilder = new GameBuilder(services.BuildServiceProvider());
             var playersInfoCollection = ObjectsBuilder.NewPlayersInfoCollection();
             var gameManager = await gameBuilder.NewGame(new(playersInfoCollection, 1)).StartGame();
             gameManager.Should().NotBeNull();

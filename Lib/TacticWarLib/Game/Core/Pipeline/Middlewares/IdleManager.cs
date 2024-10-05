@@ -1,16 +1,14 @@
 ﻿using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using TacticWar.Lib.Game.Abstractions;
+using Microsoft.Extensions.Logging;
 using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.Players.Abstractions;
 using TacticWar.Lib.Game.Table.Abstractions;
-using Timer = System.Timers.Timer;
-
 
 namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 {
-    public class IdleManager : SingleTaskMiddleware, IIdleManager
+    public partial class IdleManager : SingleTaskMiddleware, IIdleManager
     {
         readonly Subject<IPlayer?> _playerDidSomething = new();
         readonly BehaviorSubject<bool> _isGameEnded = new(false);
@@ -20,18 +18,26 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
         readonly IBotManager _botManager;
         readonly ITurnInfo _turnInfo;
         readonly IGameTable _gameTable;
+        readonly GameStartupInformation _startupInformation;
+        readonly ILogger<IdleManager> _logger;
 
         public IObservable<Unit> GameEnded => _gameEnded;
 
 
 
         // Initialization
-        public IdleManager(IBotManager botManager,ITurnInfo turnInfo, IGameTable gameTable)
+        public IdleManager(IBotManager botManager,
+                           ITurnInfo turnInfo,
+                           IGameTable gameTable,
+                           GameStartupInformation startupInformation,
+                           ILogger<IdleManager> logger)
         {
-            IdleTimeoutPeriodMs = 20 * 1000;
+            IdleTimeoutPeriodMs = 100 * 1000;
             _botManager = botManager;
             _turnInfo = turnInfo;
             _gameTable = gameTable;
+            _startupInformation = startupInformation;
+            _logger = logger;
         }
 
 
@@ -48,9 +54,12 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
                 .StartWith(_turnInfo.CurrentTurnPlayer)
                 .Do(player =>
                 {
-                    if (!_botManager.IsBotPlaying && player is not null)
+                    if (player is null || _botManager.IsBotPlaying)
+                        return;
+
+                    if (_idlePlayers.Remove(player))
                     {
-                        _idlePlayers.Remove(player);
+                        LogPlayerNotMoreIdled(_logger, _startupInformation.RoomId, player.Name);
                     }
                 })
                 .Select(player => player switch
@@ -76,9 +85,14 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
         void OnPlayerIdle(IPlayer player)
         {
-            _idlePlayers.Add(player);
+            if (_idlePlayers.Add(player))
+            {
+                LogPlayerIdled(_logger, _startupInformation.RoomId, player.Name);
+            }
+
             if (IsGameIdle)
             {
+                LogGameIdled(_logger, _startupInformation.RoomId);
                 _gameEnded.OnNext(Unit.Default);
                 return;
             }
@@ -98,5 +112,17 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
             await next!();
         }
+
+
+        [LoggerMessage(LogLevel.Information, "Player {playerName} is no more idle: Room Id {roomId}")]
+        static partial void LogPlayerNotMoreIdled(ILogger logger, int roomId, string playerName);
+
+
+        [LoggerMessage(LogLevel.Information, "Player {playerName} is idled. Room Id {roomId}")]
+        static partial void LogPlayerIdled(ILogger logger, int roomId, string playerName);
+
+
+        [LoggerMessage(LogLevel.Information, "Everyone is idled.  Room Id {roomId}")]
+        static partial void LogGameIdled(ILogger logger, int roomId);
     }
 }
