@@ -1,4 +1,6 @@
-﻿using TacticWar.Lib.Game.Exceptions;
+﻿using System.Reactive;
+using System.Reactive.Linq;
+using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Game.Players;
 using TacticWar.Rest.Utils.LongPolling;
 using TacticWar.Lib.Game.Table.Abstractions;
@@ -9,41 +11,18 @@ namespace TacticWar.Rest.ViewModels.Services
     {
         // Private fields
         readonly GameViewModelsBuilder _viewModelsBuilder;
-        readonly Dictionary<PlayerColor, UpdateQueue<GameSnapshot>> _snapshotUpdates = new();
-
-
 
         // Initialization
         public ViewModelService(GameViewModelsBuilder viewModelsBuilder, IGameTable gameTable)
         {
             _viewModelsBuilder = viewModelsBuilder;
-            foreach (var player in gameTable.Players)
-                _snapshotUpdates.Add(player.Color, new());
-            _viewModelsBuilder.GameUpdated += OnGameUpdated;
         }
 
-
-
-        // Events handlers
-        void OnGameUpdated()
+        public IObservable<GameSnapshot> GetGameSnapshot(PlayerColor playerColor)
         {
-            foreach (var (playerColor, queue) in _snapshotUpdates)
-                queue.NotifyNew(_viewModelsBuilder.GetGameSnapshot(playerColor));
-        }
-
-
-
-        // Public
-        public async Task<GameSnapshot> GetGameSnapshot(PlayerColor playerColor, int versionId)
-        {
-            if (!_snapshotUpdates.TryGetValue(playerColor, out var queue))
-                throw new GameException($"Impossible find player of color {playerColor}");
-
-            var ret = versionId < queue.VersionFetched
-                ? _viewModelsBuilder.GetGameSnapshot(playerColor)
-                : await queue.Get();
-            ret.VersionId = queue.VersionFetched;
-            return ret;
+            return _viewModelsBuilder.GameUpdated
+                                     .StartWith(Unit.Default)
+                                     .Select(_ => _viewModelsBuilder.GetGameSnapshot(playerColor));
         }
 
         public Task<GameGlobalInfo> GetGameGlobalInfo(PlayerColor color)

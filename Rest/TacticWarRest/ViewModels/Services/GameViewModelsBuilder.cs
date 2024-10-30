@@ -1,4 +1,6 @@
-﻿using TacticWar.Lib.Game.GamePhases.PhaseInfo;
+﻿using System.Reactive;
+using System.Reactive.Subjects;
+using TacticWar.Lib.Game.GamePhases.PhaseInfo;
 using TacticWar.Lib.Game.Exceptions;
 using TacticWar.Lib.Extensions;
 using TacticWar.Lib.Game.Players.Abstractions;
@@ -12,7 +14,8 @@ namespace TacticWar.Rest.ViewModels.Services
     public class GameViewModelsBuilder
     {
         // Events
-        public Action? GameUpdated;
+        readonly ISubject<Unit> _gameUpdated = Subject.Synchronize(new Subject<Unit>());
+        public IObservable<Unit> GameUpdated => _gameUpdated;
 
 
 
@@ -57,7 +60,7 @@ namespace TacticWar.Rest.ViewModels.Services
 
         void OnGameUpdated(IPlayer player)
         {
-            GameUpdated?.Invoke();
+            _gameUpdated.OnNext(Unit.Default);
         }
 
 
@@ -67,7 +70,7 @@ namespace TacticWar.Rest.ViewModels.Services
         void OnVictory(VictoryPhaseInfo info) => Update(() =>
         {
             _victoryPhaseInfo = new(info);
-            GameUpdated?.Invoke();
+            _gameUpdated.OnNext(Unit.Default);
         });
 
         void OnArmiesPlacementPhase(ArmiesPlacementInfo info) => Update(() => _armiesPlacementInfo = new(info));

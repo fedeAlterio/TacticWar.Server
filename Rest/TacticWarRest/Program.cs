@@ -1,17 +1,10 @@
-namespace TacticWar.Rest
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+using TacticWar.Rest;
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
+var appBuilder = WebApplication.CreateBuilder();
+var startup = new Startup(appBuilder.Configuration);
+
+startup.ConfigureServices(appBuilder.Services);
+var app = appBuilder.Build();
+startup.Configure(app, appBuilder.Environment);
+
+await app.RunAsync();

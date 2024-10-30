@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.AspNetCore.ResponseCompression;
 using System.IO.Compression;
 using System.Text.Json.Serialization.Metadata;
+using TacticWar.Rest.Hubs;
 using TacticWar.Rest.Installers;
 
 namespace TacticWar.Rest
@@ -63,12 +64,12 @@ namespace TacticWar.Rest
             });
 
             services.AddAppOpenTelemetry(Configuration);
-
+            services.AddSignalR();
             AddServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(WebApplication app, IWebHostEnvironment env)
         {
             //app.UseIpRateLimiting();
             app.UseSwagger();
@@ -102,49 +103,9 @@ namespace TacticWar.Rest
                 ContentTypeProvider = provider
             });
 
-            //AddSpaConfiguration(app, env, provider);
+            app.MapHub<GameHub>("/game-hub");
         }
 
-        static void AddSpaConfiguration(IApplicationBuilder app, IWebHostEnvironment env, FileExtensionContentTypeProvider provider)
-        {
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "ClientApp", "dist", "assets")),
-                RequestPath = "/assets",
-                ContentTypeProvider = provider
-            });
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "ClientApp", "dist")),
-                RequestPath = "",
-                ContentTypeProvider = provider
-            });
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
-
-
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                //if (env.IsDevelopment())
-                //{
-                //    spa.UseAngularCliServer(npmScript: "start");
-                //    // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                //}
-            });
-        }
-
-
-        // Utils
         void AddServices(IServiceCollection services)
         {
             services.AddTacticWar();

@@ -1,4 +1,6 @@
-﻿using TacticWar.Lib.Game.Rooms.Abstractions;
+﻿using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using TacticWar.Lib.Game.Rooms.Abstractions;
 using TacticWar.Rest.Requests.Game;
 using TacticWar.Rest.ViewModels;
 using TacticWar.Rest.ViewModels.Services;
@@ -17,7 +19,9 @@ namespace TacticWar.Rest.RequestsHandlers.Game
         // Core
         protected override async Task<GameSnapshot> HandleOnAuthenticated(GameSnapshotRequest request, CancellationToken cancellationToken)
         {
-            var gameSnapshot = await ViewModelService.GetGameSnapshot(PlayerColor, request.VersionId);
+            var gameSnapshot = await ViewModelService.GetGameSnapshot(PlayerColor)
+                                                     .Take(1)
+                                                     .ToTask(cancellationToken);
             return gameSnapshot;
         }
     }

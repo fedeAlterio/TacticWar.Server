@@ -32,10 +32,21 @@ namespace TacticWar.Rest.RequestsHandlers.Game
         // Authentication
         protected async Task Authenticate(TAuthenticatedRequest request)
         {
-            var room = await _roomsManager.FindById(request.RoomId);
-            GameManager = room.GameManager!;
-            PlayerColor = await room.Authenticate(request.PlayerName!, request.PlayerSecret);
-            ViewModelService = await _viewModelsLocator.FromGameManager(GameManager);
+            (ViewModelService, GameManager, PlayerColor) = await AuthenticationEx.Authenticate(_roomsManager, _viewModelsLocator, request.RoomId, request.PlayerName!, request.PlayerSecret);
+        }
+    }
+
+    public static class AuthenticationEx
+    {
+        public static async Task<(IViewModelService viewModelService,IGameManager gameManager,  PlayerColor playerColor)> Authenticate(IRoomsManager roomsManager, 
+                                                                                                                                                IViewModelsLocator viewModelsLocator,
+                                                                                                                                                int roomId, string playerName, int playerSecret)
+        {
+            var room = await roomsManager.FindById(roomId);
+            var gameManager = room.GameManager!;
+            var playerColor = await room.Authenticate(playerName!, playerSecret);
+            var viewModelService = await viewModelsLocator.FromGameManager(gameManager);
+            return (viewModelService, gameManager, playerColor);
         }
     }
 }

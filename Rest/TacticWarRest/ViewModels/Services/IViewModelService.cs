@@ -4,8 +4,7 @@ namespace TacticWar.Rest.ViewModels.Services
 {
     public interface IViewModelService
     {
-        Task<GameSnapshot> GetGameSnapshot(PlayerColor playerColor, int versionId);
+        IObservable<GameSnapshot> GetGameSnapshot(PlayerColor playerColor);
         Task<GameGlobalInfo> GetGameGlobalInfo(PlayerColor playerColor);
-
     }
 }
