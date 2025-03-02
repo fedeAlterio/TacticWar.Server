@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging.Testing;
 using TacticWar.Lib.Game;
@@ -19,7 +21,7 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
     public class GameTerminationControllerTests
     {
         [FactFor(nameof(GameTerminationController))]
-        public async void Should_InvokeVictoryEventWhenPlayerHasWon()
+        public async Task Should_InvokeVictoryEventWhenPlayerHasWon()
         {
             await using var exceptionCatcher = new ExceptionCatcher();
             var objectiveMock = new Mock<IObjective>();
@@ -29,6 +31,8 @@ namespace TacticWar.Test.TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 
             var idleManagerMock = new Mock<IIdleManager>();
             idleManagerMock.Setup(x => x.IsGameIdle).Returns(false);
+            idleManagerMock.Setup(x => x.GameEnded)
+                           .Returns(new Subject<Unit>());
 
             var gameTable = ObjectsBuilder.NewGameTable(objectivesDeck: objectivesDeck);
             var gameTerminationController = new GameTerminationController(gameTable, idleManagerMock.Object, new GameStartupInformation(new([]), 1), new FakeLogger<GameTerminationController>());

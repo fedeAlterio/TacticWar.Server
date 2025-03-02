@@ -20,4 +20,4 @@ jobs:
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
-        run: dotnet test -c Release Tests/TacticWar.Lib.Tests --no-build --verbosity normal
+        run: dotnet test -c Release Tests/TacticWar.Test.csproj --no-build --verbosity normal

@@ -17,8 +17,10 @@ namespace TacticWar.Test.TacticWar.Rest.Tests.Utils
     {   
         public static async Task<GameBuildInfo> BuildGame(PlayersInfoCollection playersInfo)
         {
+            var services = new ServiceCollection();
+            services.AddFakeLogging();
             // Setup            
-            var gameConfigurator = new GameBuilder(new ServiceCollection().BuildServiceProvider()).NewGame(new(playersInfo, 1));
+            var gameConfigurator = new GameBuilder(services.BuildServiceProvider()).NewGame(new(playersInfo, 1));
             IGameManager? gameManager = null;
             var roomMock = new Mock<IRoom>();
             roomMock.Setup(x => x.BuildGame()).Returns(() => gameConfigurator);
