@@ -29,9 +29,15 @@ namespace TacticWar.Lib.Game.Rooms
         // Events
         async void OnRoomDeath(IRoom room)
         {
-            await Task.Delay(3000);
-            using var _ = _locker.Lock();
-            _rooms.Remove(room);
+            try
+            {
+                await Task.Delay(3000);
+                using var _ = _locker.Lock();
+                _rooms.Remove(room);
+            }
+            catch (Exception e)
+            {
+            }
         }
 
 

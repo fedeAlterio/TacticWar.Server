@@ -12,7 +12,7 @@ namespace TacticWar.Test.TacticWar.Rest.Tests.Utils
     public class LongPollingTests
     {
         [FactFor(nameof(UpdateQueue<int>.Get))]
-        public async void Should_ProvideConsistentUpdates()
+        public async Task Should_ProvideConsistentUpdates()
         {
             var queue = new UpdateQueue<int>();
             var numTask1 = queue.Get();

@@ -1,5 +1,6 @@
 ﻿using Moq;
 using System;
+using System.Threading.Tasks;
 using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.Core.Pipeline;
 using TacticWar.Lib.Game.Core.Pipeline.Middlewares;
@@ -11,7 +12,7 @@ namespace TacticWar.Lib.Tests.Game.Pipeline.Middlewares
     public class ShortCircuitIfGameEndedTests
     {
         [FactFor(nameof(ShortCircuitIfGameEnded))]
-        public async void Should_NotCallNextMiddlwareIfGameEnded()
+        public async Task Should_NotCallNextMiddlwareIfGameEnded()
         {
             var isGameEnded = false;
             var secondMiddlewareCalled = false;

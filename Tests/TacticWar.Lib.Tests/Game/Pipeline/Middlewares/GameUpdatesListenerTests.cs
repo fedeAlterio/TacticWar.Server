@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Threading.Tasks;
+using FluentAssertions;
 using Moq;
 using TacticWar.Lib.Game.Core.Abstractions;
 using TacticWar.Lib.Game.Core.Pipeline;
@@ -15,7 +16,7 @@ namespace TacticWar.Lib.Tests.Game.Pipeline.Middlewares
     public class GameUpdatesListenerTests
     {
         [FactFor(nameof(GameUpdatesListener))]
-        public async void Should_TriggerAnEventForEveryPipelineMethod()
+        public async Task Should_TriggerAnEventForEveryPipelineMethod()
         {
             bool eventHandlerCalled = false;
             var player = new Player();

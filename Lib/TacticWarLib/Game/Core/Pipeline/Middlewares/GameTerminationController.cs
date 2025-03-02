@@ -66,7 +66,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
 
         // Invoke Events
-        async void InvokeGameTerminated()
+        async Task InvokeGameTerminated()
         {
             if (IsGameEnded)
                 return;
@@ -78,7 +78,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
             LogGameTerminated(_logger, _gameStartupInformation.RoomId);
         }
 
-        async void InvokeVictory(IPlayer winner, bool shouldWait)
+        async Task InvokeVictory(IPlayer winner, bool shouldWait)
         {
             IsGameEnded = true;
 
@@ -87,7 +87,7 @@ namespace TacticWar.Lib.Game.Core.Pipeline.Middlewares
 
             var victoryInfo = new VictoryPhaseInfo { Winner = winner };
             Victory?.Invoke(victoryInfo);
-            InvokeGameTerminated();
+            await InvokeGameTerminated();
         }
 
         protected override async Task DoAction()
