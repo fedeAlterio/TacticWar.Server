@@ -9,7 +9,7 @@ jobs:
 
     steps:
       - name: tests
-        uses: ./.github/workflows/reusable/build-and-test.yml
+        uses: ./.github/workflows/unit-tests.yml
   
   docker:
     runs-on: ubuntu-latest
