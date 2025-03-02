@@ -102,47 +102,12 @@ namespace TacticWar.Rest
                 ContentTypeProvider = provider
             });
 
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<Startup>>();
+            logger.LogInformation("Started");
+
+
             //AddSpaConfiguration(app, env, provider);
         }
-
-        static void AddSpaConfiguration(IApplicationBuilder app, IWebHostEnvironment env, FileExtensionContentTypeProvider provider)
-        {
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "ClientApp", "dist", "assets")),
-                RequestPath = "/assets",
-                ContentTypeProvider = provider
-            });
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                Path.Combine(env.ContentRootPath, "ClientApp", "dist")),
-                RequestPath = "",
-                ContentTypeProvider = provider
-            });
-            if (!env.IsDevelopment())
-            {
-                app.UseSpaStaticFiles();
-            }
-
-
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                //if (env.IsDevelopment())
-                //{
-                //    spa.UseAngularCliServer(npmScript: "start");
-                //    // spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                //}
-            });
-        }
-
 
         // Utils
         void AddServices(IServiceCollection services)
