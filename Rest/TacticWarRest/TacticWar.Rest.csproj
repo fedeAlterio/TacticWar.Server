@@ -25,42 +25,8 @@
     <ProjectReference Include="..\..\DependencyInjection\TacticWar.Lib.Extensions.Microsoft.DependencyInjection\TacticWar.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\Lib\TacticWarLib\TacticWar.Lib.csproj" />
   </ItemGroup>
-  <PropertyGroup>
-    <SpaRoot>ClientApp\</SpaRoot>
-    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-  </PropertyGroup>
   <ItemGroup>
-    <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Content Remove="$(SpaRoot)**" />
-    <None Remove="$(SpaRoot)**" />
-    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="ClientApp\angular.json" />
-    <Content Include="ClientApp\package-lock.json" />
-    <Content Include="ClientApp\package.json" />
-    <Content Include="ClientApp\tsconfig.app.json" />
-    <Content Include="ClientApp\tsconfig.json" />
-    <Content Include="ClientApp\tsconfig.spec.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="wwwroot\Build\tacticwar.data.unityweb" />
-    <None Include="wwwroot\Build\tacticwar.framework.js.unityweb" />
-    <None Include="wwwroot\Build\tacticwar.loader.js" />
-    <None Include="wwwroot\Build\tacticwar.wasm.unityweb" />
-  </ItemGroup>
-  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
-    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production" />
-    <!-- Include the newly-built files in the publish output -->
-    <ItemGroup>
-      <DistFiles Include="$(SpaRoot)dist\**" />
-      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
-        <RelativePath>%(DistFiles.Identity)</RelativePath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      </ResolvedFileToPublish>
-    </ItemGroup>
-  </Target>
+  
 </Project>
