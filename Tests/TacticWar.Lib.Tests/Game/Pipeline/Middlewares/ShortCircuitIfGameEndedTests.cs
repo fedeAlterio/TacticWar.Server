@@ -11,7 +11,7 @@ namespace TacticWar.Lib.Tests.Game.Pipeline.Middlewares
 {
     public class ShortCircuitIfGameEndedTests
     {
-        [FactFor(nameof(ShortCircuitIfGameEnded))]
+        [FactFor(nameof(ShortCircuitIfGameEnded))] 
         public async Task Should_NotCallNextMiddlwareIfGameEnded()
         {
             var isGameEnded = false;
